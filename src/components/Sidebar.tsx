@@ -29,8 +29,9 @@ const Sidebar = () => {
 
       {/* Sidebar toggle button for mobile */}
       <button
-        className="md:hidden fixed left-4 top-20 z-50 bg-miamour-burgundy text-white p-2 rounded-full shadow-lg"
+        className="md:hidden fixed left-4 top-20 z-50 bg-miamour-pink text-white p-2 rounded-full shadow-lg"
         onClick={() => setIsOpen(!isOpen)}
+        aria-label={isOpen ? "Close sidebar" : "Open sidebar"}
       >
         {isOpen ? (
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -45,18 +46,18 @@ const Sidebar = () => {
 
       {/* Sidebar */}
       <div 
-        className={`fixed md:static top-0 left-0 h-full bg-white border-r border-miamour-blush/50 w-64 z-50 transform transition-transform duration-300 ease-in-out ${
+        className={`fixed md:static top-0 left-0 h-full bg-white border-r border-miamour-lightpink/50 w-64 z-50 transform transition-transform duration-300 ease-in-out ${
           isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
         }`}
       >
-        <div className="p-6 border-b border-miamour-blush/50">
+        <div className="p-6 border-b border-miamour-lightpink/50">
           <div className="flex items-center mb-6">
-            <Heart className="h-8 w-8 text-miamour-burgundy mr-2" />
-            <span className="text-xl font-serif font-medium text-miamour-burgundy">MiAmour</span>
+            <Heart className="h-8 w-8 text-miamour-pink mr-2" />
+            <span className="text-xl font-serif font-medium text-miamour-pink">MiAmour</span>
           </div>
           
           <div className="flex items-center">
-            <div className="w-12 h-12 rounded-full bg-miamour-blush flex items-center justify-center text-miamour-burgundy mr-3">
+            <div className="w-12 h-12 rounded-full bg-miamour-blush flex items-center justify-center text-miamour-pink mr-3">
               <User className="h-6 w-6" />
             </div>
             <div>
@@ -74,7 +75,7 @@ const Sidebar = () => {
                 to="/dashboard" 
                 className={`flex items-center px-4 py-3 rounded-lg transition-colors ${
                   location.pathname === '/dashboard' 
-                    ? 'bg-miamour-burgundy text-white' 
+                    ? 'bg-miamour-pink text-white' 
                     : 'hover:bg-miamour-blush/50 text-miamour-charcoal'
                 }`}
               >
@@ -87,7 +88,7 @@ const Sidebar = () => {
                 to="/matches" 
                 className={`flex items-center px-4 py-3 rounded-lg transition-colors ${
                   location.pathname === '/matches' 
-                    ? 'bg-miamour-burgundy text-white' 
+                    ? 'bg-miamour-pink text-white' 
                     : 'hover:bg-miamour-blush/50 text-miamour-charcoal'
                 }`}
               >
@@ -100,7 +101,7 @@ const Sidebar = () => {
                 to="/messages" 
                 className={`flex items-center px-4 py-3 rounded-lg transition-colors ${
                   location.pathname === '/messages' 
-                    ? 'bg-miamour-burgundy text-white' 
+                    ? 'bg-miamour-pink text-white' 
                     : 'hover:bg-miamour-blush/50 text-miamour-charcoal'
                 }`}
               >
@@ -113,7 +114,7 @@ const Sidebar = () => {
                 to="/appointments" 
                 className={`flex items-center px-4 py-3 rounded-lg transition-colors ${
                   location.pathname === '/appointments' 
-                    ? 'bg-miamour-burgundy text-white' 
+                    ? 'bg-miamour-pink text-white' 
                     : 'hover:bg-miamour-blush/50 text-miamour-charcoal'
                 }`}
               >
@@ -130,7 +131,7 @@ const Sidebar = () => {
                 to="/profile" 
                 className={`flex items-center px-4 py-3 rounded-lg transition-colors ${
                   location.pathname === '/profile' 
-                    ? 'bg-miamour-burgundy text-white' 
+                    ? 'bg-miamour-pink text-white' 
                     : 'hover:bg-miamour-blush/50 text-miamour-charcoal'
                 }`}
               >
@@ -143,7 +144,7 @@ const Sidebar = () => {
                 to="/settings" 
                 className={`flex items-center px-4 py-3 rounded-lg transition-colors ${
                   location.pathname === '/settings' 
-                    ? 'bg-miamour-burgundy text-white' 
+                    ? 'bg-miamour-pink text-white' 
                     : 'hover:bg-miamour-blush/50 text-miamour-charcoal'
                 }`}
               >

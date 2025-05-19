@@ -64,13 +64,15 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				},
 				miamour: {
-					blush: '#F8D7DA',
-					rose: '#E8A9AF',
-					burgundy: '#800E13',
+					blush: '#FFDEE2',
+					rose: '#FF8FA3',
+					burgundy: '#FF4D6D',
 					navy: '#14213D',
 					gold: '#FCA311',
-					cream: '#FFF8F0',
-					charcoal: '#343A40'
+					cream: '#FFF0F3',
+					charcoal: '#343A40',
+					pink: '#FF8BA7',
+					lightpink: '#FFCCD5'
 				}
 			},
 			borderRadius: {

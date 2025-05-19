@@ -19,7 +19,7 @@ const WeddingMatching = () => {
         <div className="container mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div>
-              <h1 className="text-4xl md:text-5xl font-serif font-bold text-miamour-burgundy mb-6">
+              <h1 className="text-4xl md:text-5xl font-serif font-bold text-miamour-pink mb-6">
                 Find Your Perfect Match
               </h1>
               <p className="text-lg text-miamour-charcoal mb-8">
@@ -27,27 +27,27 @@ const WeddingMatching = () => {
               </p>
               <div className="space-y-4">
                 <div className="flex items-center">
-                  <CheckCircle className="text-miamour-gold mr-3 h-6 w-6" />
+                  <CheckCircle className="text-miamour-pink mr-3 h-6 w-6" />
                   <p className="text-miamour-charcoal">Comprehensive compatibility assessment</p>
                 </div>
                 <div className="flex items-center">
-                  <CheckCircle className="text-miamour-gold mr-3 h-6 w-6" />
+                  <CheckCircle className="text-miamour-pink mr-3 h-6 w-6" />
                   <p className="text-miamour-charcoal">Values-based matching algorithm</p>
                 </div>
                 <div className="flex items-center">
-                  <CheckCircle className="text-miamour-gold mr-3 h-6 w-6" />
+                  <CheckCircle className="text-miamour-pink mr-3 h-6 w-6" />
                   <p className="text-miamour-charcoal">Human-guided matching process</p>
                 </div>
               </div>
               <div className="mt-8">
                 <Button 
                   onClick={handleStartMatching} 
-                  className="bg-miamour-burgundy text-white hover:bg-miamour-burgundy/90 text-lg px-8 py-6 mr-4"
+                  className="bg-miamour-pink text-white hover:bg-miamour-rose/90 text-lg px-8 py-6 mr-4"
                 >
                   Start Matching
                 </Button>
                 <Link to="/pricing">
-                  <Button variant="outline" className="border-miamour-burgundy text-miamour-burgundy hover:bg-miamour-blush/30">
+                  <Button variant="outline" className="border-miamour-pink text-miamour-pink hover:bg-miamour-blush/30">
                     View Plans
                   </Button>
                 </Link>
@@ -74,7 +74,7 @@ const WeddingMatching = () => {
       <section className="py-16 md:py-24 bg-white">
         <div className="container mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-serif font-medium text-miamour-burgundy mb-4">
+            <h2 className="text-3xl md:text-4xl font-serif font-medium text-miamour-pink mb-4">
               How Our Matching Works
             </h2>
             <p className="text-miamour-charcoal max-w-2xl mx-auto">
@@ -86,9 +86,9 @@ const WeddingMatching = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="bg-miamour-cream rounded-lg p-8 text-center">
               <div className="bg-miamour-blush w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
-                <span className="text-miamour-burgundy font-serif font-bold text-2xl">1</span>
+                <span className="text-miamour-pink font-serif font-bold text-2xl">1</span>
               </div>
-              <h3 className="text-xl font-serif font-medium text-miamour-burgundy mb-4">
+              <h3 className="text-xl font-serif font-medium text-miamour-pink mb-4">
                 Complete Your Profile
               </h3>
               <p className="text-miamour-charcoal">
@@ -98,9 +98,9 @@ const WeddingMatching = () => {
             
             <div className="bg-miamour-cream rounded-lg p-8 text-center">
               <div className="bg-miamour-blush w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
-                <span className="text-miamour-burgundy font-serif font-bold text-2xl">2</span>
+                <span className="text-miamour-pink font-serif font-bold text-2xl">2</span>
               </div>
-              <h3 className="text-xl font-serif font-medium text-miamour-burgundy mb-4">
+              <h3 className="text-xl font-serif font-medium text-miamour-pink mb-4">
                 Receive Quality Matches
               </h3>
               <p className="text-miamour-charcoal">
@@ -110,9 +110,9 @@ const WeddingMatching = () => {
             
             <div className="bg-miamour-cream rounded-lg p-8 text-center">
               <div className="bg-miamour-blush w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
-                <span className="text-miamour-burgundy font-serif font-bold text-2xl">3</span>
+                <span className="text-miamour-pink font-serif font-bold text-2xl">3</span>
               </div>
-              <h3 className="text-xl font-serif font-medium text-miamour-burgundy mb-4">
+              <h3 className="text-xl font-serif font-medium text-miamour-pink mb-4">
                 Connect & Build Relationships
               </h3>
               <p className="text-miamour-charcoal">
@@ -127,7 +127,7 @@ const WeddingMatching = () => {
       <section className="py-16 md:py-24 bg-miamour-cream">
         <div className="container mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-serif font-medium text-miamour-burgundy mb-4">
+            <h2 className="text-3xl md:text-4xl font-serif font-medium text-miamour-pink mb-4">
               Premium Matching Features
             </h2>
             <p className="text-miamour-charcoal max-w-2xl mx-auto">
@@ -137,11 +137,11 @@ const WeddingMatching = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             <div className="flex">
-              <div className="mr-6 text-miamour-gold">
+              <div className="mr-6 text-miamour-pink">
                 <Heart className="h-8 w-8" />
               </div>
               <div>
-                <h3 className="text-xl font-serif font-medium text-miamour-burgundy mb-2">
+                <h3 className="text-xl font-serif font-medium text-miamour-pink mb-2">
                   Personalized Matching Analysis
                 </h3>
                 <p className="text-miamour-charcoal">
@@ -151,11 +151,11 @@ const WeddingMatching = () => {
             </div>
             
             <div className="flex">
-              <div className="mr-6 text-miamour-gold">
+              <div className="mr-6 text-miamour-pink">
                 <Calendar className="h-8 w-8" />
               </div>
               <div>
-                <h3 className="text-xl font-serif font-medium text-miamour-burgundy mb-2">
+                <h3 className="text-xl font-serif font-medium text-miamour-pink mb-2">
                   Guided Communication
                 </h3>
                 <p className="text-miamour-charcoal">
@@ -165,11 +165,11 @@ const WeddingMatching = () => {
             </div>
             
             <div className="flex">
-              <div className="mr-6 text-miamour-gold">
+              <div className="mr-6 text-miamour-pink">
                 <Settings className="h-8 w-8" />
               </div>
               <div>
-                <h3 className="text-xl font-serif font-medium text-miamour-burgundy mb-2">
+                <h3 className="text-xl font-serif font-medium text-miamour-pink mb-2">
                   Relationship Coaching
                 </h3>
                 <p className="text-miamour-charcoal">
@@ -179,11 +179,11 @@ const WeddingMatching = () => {
             </div>
             
             <div className="flex">
-              <div className="mr-6 text-miamour-gold">
+              <div className="mr-6 text-miamour-pink">
                 <User className="h-8 w-8" />
               </div>
               <div>
-                <h3 className="text-xl font-serif font-medium text-miamour-burgundy mb-2">
+                <h3 className="text-xl font-serif font-medium text-miamour-pink mb-2">
                   Video Introduction
                 </h3>
                 <p className="text-miamour-charcoal">
@@ -195,7 +195,7 @@ const WeddingMatching = () => {
 
           <div className="mt-16 text-center">
             <Link to="/pricing">
-              <Button className="bg-miamour-burgundy text-white hover:bg-miamour-burgundy/90 text-lg px-8 py-6">
+              <Button className="bg-miamour-pink text-white hover:bg-miamour-pink/90 text-lg px-8 py-6">
                 View All Features
               </Button>
             </Link>
@@ -204,7 +204,7 @@ const WeddingMatching = () => {
       </section>
 
       {/* CTA */}
-      <section className="bg-miamour-burgundy text-white py-16">
+      <section className="bg-miamour-pink text-white py-16">
         <div className="container mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-serif font-medium mb-8">
             Start Your Journey to Finding Love
@@ -213,7 +213,7 @@ const WeddingMatching = () => {
             Join MiAmour today and connect with compatible partners who share your values and vision for the future.
           </p>
           <Link to="/register">
-            <Button className="bg-miamour-gold text-miamour-burgundy hover:bg-miamour-gold/90 text-lg px-8 py-6">
+            <Button className="bg-white text-miamour-pink hover:bg-miamour-blush text-lg px-8 py-6">
               Get Started
             </Button>
           </Link>
