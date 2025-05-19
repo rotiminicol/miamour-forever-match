@@ -1,10 +1,9 @@
-
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Heart } from "lucide-react";
+import { Heart, Apple, Facebook } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -18,7 +17,6 @@ const Register = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Check if user is already logged in
     const checkSession = async () => {
       const { data } = await supabase.auth.getSession();
       if (data.session) {
@@ -44,7 +42,6 @@ const Register = () => {
     }
 
     try {
-      // Create the user in Supabase Auth
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
@@ -81,9 +78,25 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-[calc(100vh-200px)] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-miamour-cream/50">
-      <div className="w-full max-w-md">
-        <div className="bg-white p-8 rounded-lg shadow-md border border-miamour-blush">
+    <div className="min-h-screen w-full flex">
+      {/* Image Section */}
+      <div className="hidden lg:block w-1/2 bg-miamour-burgundy/10 relative">
+        <img 
+          src="/lovable-uploads/70afdab7-cb7a-4e0d-bb1b-55e99da53d1d.png" 
+          alt="Couple in love" 
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent flex items-end p-12">
+          <div>
+            <h2 className="text-4xl font-serif text-white mb-4">Begin Your Love Story</h2>
+            <p className="text-white/90">Create your account and start connecting with potential matches today</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Form Section */}
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-8">
+        <div className="w-full max-w-md">
           <div className="text-center mb-8">
             <div className="inline-flex items-center justify-center">
               <Heart className="h-8 w-8 text-miamour-burgundy" />
@@ -94,14 +107,6 @@ const Register = () => {
             <p className="text-miamour-charcoal mt-2">
               Begin your journey to love and connection
             </p>
-          </div>
-          
-          <div className="mb-6 rounded-lg overflow-hidden">
-            <img 
-              src="/lovable-uploads/70afdab7-cb7a-4e0d-bb1b-55e99da53d1d.png" 
-              alt="Couple in love" 
-              className="w-full h-48 object-cover"
-            />
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -169,6 +174,37 @@ const Register = () => {
             >
               {isLoading ? "Creating account..." : "Create account"}
             </Button>
+
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-miamour-blush" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-white px-2 text-miamour-charcoal">
+                  Or sign up with
+                </span>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-3 gap-4">
+              <Button variant="outline" className="border-miamour-blush">
+                {/* Google icon SVG */}
+                <svg className="h-4 w-4" viewBox="0 0 24 24">
+                  <g>
+                    <path fill="#EA4335" d="M21.805 10.023h-9.765v3.977h5.617c-.242 1.242-1.484 3.648-5.617 3.648-3.375 0-6.125-2.789-6.125-6.148s2.75-6.148 6.125-6.148c1.922 0 3.211.82 3.953 1.523l2.703-2.633c-1.711-1.57-3.922-2.531-6.656-2.531-5.523 0-10 4.477-10 10s4.477 10 10 10c5.75 0 9.563-4.031 9.563-9.719 0-.656-.07-1.148-.156-1.648z"/>
+                    <path fill="#34A853" d="M3.545 7.545l3.273 2.402c.891-1.742 2.578-2.945 4.687-2.945 1.109 0 2.125.383 2.922 1.016l2.703-2.633c-1.711-1.57-3.922-2.531-6.656-2.531-3.984 0-7.344 2.617-8.672 6.148z"/>
+                    <path fill="#FBBC05" d="M12 22c2.672 0 4.922-.883 6.563-2.398l-3.047-2.5c-.844.57-1.922.914-3.516.914-2.789 0-5.148-1.883-5.992-4.414l-3.273 2.531c1.617 3.367 5.125 5.867 9.265 5.867z"/>
+                    <path fill="#4285F4" d="M21.805 10.023h-9.765v3.977h5.617c-.242 1.242-1.484 3.648-5.617 3.648-3.375 0-6.125-2.789-6.125-6.148s2.75-6.148 6.125-6.148c1.922 0 3.211.82 3.953 1.523l2.703-2.633c-1.711-1.57-3.922-2.531-6.656-2.531-5.523 0-10 4.477-10 10s4.477 10 10 10c5.75 0 9.563-4.031 9.563-9.719 0-.656-.07-1.148-.156-1.648z"/>
+                  </g>
+                </svg>
+              </Button>
+              <Button variant="outline" className="border-miamour-blush">
+                <Facebook className="h-4 w-4 text-blue-600" />
+              </Button>
+              <Button variant="outline" className="border-miamour-blush">
+                <Apple className="h-4 w-4 text-gray-800" />
+              </Button>
+            </div>
 
             <p className="text-xs text-center text-miamour-charcoal">
               By signing up, you agree to our{" "}

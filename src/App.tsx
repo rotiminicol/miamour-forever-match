@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -27,10 +26,22 @@ import NotFound from "./pages/NotFound";
 // Create a layout component to conditionally render the footer
 const AppLayout = () => {
   const location = useLocation();
-  
-  // Only show footer on these pages
-  const showFooter = ['/', '/wedding-matching', '/couples-therapy', '/pricing', '/login', '/register'].includes(location.pathname);
-  
+
+  // Pages where Navbar, Sidebar, and Footer should NOT be shown
+  const fullScreenPages = ['/login', '/register'];
+
+  // Only show footer on the home page
+  const showFooter = location.pathname === '/';
+
+  if (fullScreenPages.includes(location.pathname)) {
+    return (
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+      </Routes>
+    );
+  }
+
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
@@ -48,8 +59,6 @@ const AppLayout = () => {
             <Route path="/matches" element={<MatchingDashboard />} />
             <Route path="/couples-therapy" element={<CouplesTherapy />} />
             <Route path="/pricing" element={<Pricing />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/payment-success" element={<PaymentSuccess />} />
             <Route path="*" element={<NotFound />} />
