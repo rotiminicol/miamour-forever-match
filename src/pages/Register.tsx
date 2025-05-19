@@ -1,11 +1,12 @@
 
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Heart } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 const Register = () => {
   const [firstName, setFirstName] = useState("");
@@ -14,20 +15,69 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Check if user is already logged in
+    const checkSession = async () => {
+      const { data } = await supabase.auth.getSession();
+      if (data.session) {
+        navigate('/');
+      }
+    };
+    
+    checkSession();
+  }, [navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
-    // This is a placeholder for authentication logic
-    // In a real application, you'd connect to Supabase or another auth provider
-    setTimeout(() => {
+    if (password.length < 8) {
       toast({
-        title: "Registration functionality",
-        description: "This is a placeholder. Connect to Supabase for real authentication.",
+        title: "Password too short",
+        description: "Password must be at least 8 characters long",
+        variant: "destructive",
       });
       setIsLoading(false);
-    }, 1500);
+      return;
+    }
+
+    try {
+      // Create the user in Supabase Auth
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            first_name: firstName,
+            last_name: lastName,
+          },
+        },
+      });
+
+      if (error) {
+        toast({
+          title: "Registration failed",
+          description: error.message,
+          variant: "destructive",
+        });
+      } else if (data.user) {
+        toast({
+          title: "Registration successful",
+          description: "Welcome to MiAmour! Please check your email to confirm your account.",
+        });
+        setTimeout(() => navigate('/'), 2000);
+      }
+    } catch (error) {
+      toast({
+        title: "Registration error",
+        description: "An unexpected error occurred. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -44,6 +94,14 @@ const Register = () => {
             <p className="text-miamour-charcoal mt-2">
               Begin your journey to love and connection
             </p>
+          </div>
+          
+          <div className="mb-6 rounded-lg overflow-hidden">
+            <img 
+              src="/lovable-uploads/70afdab7-cb7a-4e0d-bb1b-55e99da53d1d.png" 
+              alt="Couple in love" 
+              className="w-full h-48 object-cover"
+            />
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">

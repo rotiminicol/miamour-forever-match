@@ -1,7 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { Heart, CheckCircle, Calendar } from "lucide-react";
+import { Heart, CheckCircle, Calendar, User, Settings } from "lucide-react";
 
 const WeddingMatching = () => {
   return (
@@ -50,7 +50,7 @@ const WeddingMatching = () => {
                 <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-miamour-gold/20 rounded-full z-0"></div>
                 <div className="relative z-10 bg-white p-6 rounded-lg shadow-md border border-miamour-blush/50">
                   <img
-                    src="https://images.unsplash.com/photo-1529634806980-85c3dafe142a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                    src="/lovable-uploads/ba939aa2-7c2b-45d5-a38c-c9892cc2db4f.png"
                     alt="Happy couple"
                     className="rounded-lg w-full h-auto"
                   />
@@ -157,7 +157,7 @@ const WeddingMatching = () => {
             
             <div className="flex">
               <div className="mr-6 text-miamour-gold">
-                <HandHeart className="h-8 w-8" />
+                <Settings className="h-8 w-8" />
               </div>
               <div>
                 <h3 className="text-xl font-serif font-medium text-miamour-burgundy mb-2">
@@ -171,7 +171,7 @@ const WeddingMatching = () => {
             
             <div className="flex">
               <div className="mr-6 text-miamour-gold">
-                <Users className="h-8 w-8" />
+                <User className="h-8 w-8" />
               </div>
               <div>
                 <h3 className="text-xl font-serif font-medium text-miamour-burgundy mb-2">

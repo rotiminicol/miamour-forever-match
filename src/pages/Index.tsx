@@ -1,15 +1,40 @@
-
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { Heart, HandHeart, Users } from "lucide-react";
+import { Heart, Users, Settings } from "lucide-react";
 import { motion } from "framer-motion";
+
+// Create a custom HandHeart icon since it's not in the standard lucide-react package
+const HandHeart = (props: any) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+  >
+    <path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"></path>
+    <path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v2"></path>
+    <path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8"></path>
+    <path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.9-3.97a1 1 0 0 1 .29-1.64L3 14"></path>
+    <path d="M17.42 14.44A3 3 0 0 0 19 17a3 3 0 0 0-5.94.56"></path>
+    <path d="M13.41 17.77a3 3 0 0 0 .46 2 3 3 0 0 0 5.94-.56"></path>
+    <path d="M10.41, 19.87a3 3 0 0 0 5.94-.56, 3 3 0 0 0-.46-2, 3 3 0 0 0-4.11-1.2"></path>
+  </svg>
+);
 
 const Index = () => {
   return (
     <>
       {/* Hero Section */}
-      <section className="hero-pattern py-20 md:py-32">
-        <div className="container mx-auto text-center">
+      <section className="relative py-20 md:py-32 overflow-hidden">
+        <div className="absolute inset-0 bg-miamour-cream opacity-90 z-0"></div>
+        <div className="absolute inset-0 bg-cover bg-center z-[-1]" style={{ backgroundImage: `url('/lovable-uploads/89d37f15-5428-454f-9922-b847af3f994c.png')` }}></div>
+        <div className="container mx-auto text-center relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -19,7 +44,7 @@ const Index = () => {
               Find Your Perfect Match<br />
               <span className="text-miamour-gold">Build Lasting Love</span>
             </h1>
-            <p className="text-lg md:text-xl text-miamour-charcoal max-w-2xl mx-auto mb-10">
+            <p className="text-lg md:text-xl text-miamour-charcoal max-w-2xl mx-auto mb-10 bg-white/70 p-4 rounded-lg">
               MiAmour helps couples find their perfect match and nurture their relationships with expert therapy and guidance.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -29,7 +54,7 @@ const Index = () => {
                 </Button>
               </Link>
               <Link to="/pricing">
-                <Button variant="outline" className="border-miamour-burgundy text-miamour-burgundy hover:bg-miamour-blush/30 text-lg px-8 py-6">
+                <Button variant="outline" className="bg-white/80 border-miamour-burgundy text-miamour-burgundy hover:bg-miamour-blush/30 text-lg px-8 py-6">
                   View Plans
                 </Button>
               </Link>
@@ -52,8 +77,13 @@ const Index = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
             <div className="bg-miamour-cream rounded-lg p-8 shadow-md hover:shadow-lg transition-shadow border border-miamour-blush">
-              <div className="text-miamour-gold mb-4">
-                <Heart className="h-12 w-12" />
+              <div className="flex items-center mb-6">
+                <div className="text-miamour-gold mr-4">
+                  <Heart className="h-12 w-12" />
+                </div>
+                <div className="w-20 h-20 rounded-full overflow-hidden">
+                  <img src="/lovable-uploads/7c2a3061-f38e-4225-be10-d69d0056a60c.png" alt="Couple" className="w-full h-full object-cover" />
+                </div>
               </div>
               <h3 className="text-2xl font-serif font-medium text-miamour-burgundy mb-4">
                 Wedding Matching
@@ -83,8 +113,13 @@ const Index = () => {
             </div>
 
             <div className="bg-miamour-cream rounded-lg p-8 shadow-md hover:shadow-lg transition-shadow border border-miamour-blush">
-              <div className="text-miamour-gold mb-4">
-                <HandHeart className="h-12 w-12" />
+              <div className="flex items-center mb-6">
+                <div className="text-miamour-gold mr-4">
+                  <HandHeart className="h-12 w-12" />
+                </div>
+                <div className="w-20 h-20 rounded-full overflow-hidden">
+                  <img src="/lovable-uploads/3c1cafa9-8e1d-4272-a237-4d411868fc09.png" alt="Couple" className="w-full h-full object-cover" />
+                </div>
               </div>
               <h3 className="text-2xl font-serif font-medium text-miamour-burgundy mb-4">
                 Couples Therapy
@@ -131,8 +166,8 @@ const Index = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="bg-white rounded-lg p-6 shadow-md border border-miamour-blush">
               <div className="flex items-center mb-4">
-                <div className="w-12 h-12 bg-miamour-blush rounded-full flex items-center justify-center text-miamour-burgundy mr-4">
-                  <Users className="h-6 w-6" />
+                <div className="w-16 h-16 rounded-full overflow-hidden mr-4">
+                  <img src="/lovable-uploads/ea449538-9033-4309-ac5d-2fc2ffdbc083.png" alt="Happy couple" className="w-full h-full object-cover" />
                 </div>
                 <div>
                   <h4 className="font-serif font-medium">Sarah & Michael</h4>
@@ -146,8 +181,8 @@ const Index = () => {
             
             <div className="bg-white rounded-lg p-6 shadow-md border border-miamour-blush">
               <div className="flex items-center mb-4">
-                <div className="w-12 h-12 bg-miamour-blush rounded-full flex items-center justify-center text-miamour-burgundy mr-4">
-                  <Users className="h-6 w-6" />
+                <div className="w-16 h-16 rounded-full overflow-hidden mr-4">
+                  <img src="/lovable-uploads/e21a4b76-b28b-49de-9e63-0598991a5d03.png" alt="Therapy clients" className="w-full h-full object-cover" />
                 </div>
                 <div>
                   <h4 className="font-serif font-medium">David & Emma</h4>
@@ -161,8 +196,8 @@ const Index = () => {
             
             <div className="bg-white rounded-lg p-6 shadow-md border border-miamour-blush">
               <div className="flex items-center mb-4">
-                <div className="w-12 h-12 bg-miamour-blush rounded-full flex items-center justify-center text-miamour-burgundy mr-4">
-                  <Users className="h-6 w-6" />
+                <div className="w-16 h-16 rounded-full overflow-hidden mr-4">
+                  <img src="/lovable-uploads/99899bbf-47ce-4f76-9b78-958369c519de.png" alt="Premium members" className="w-full h-full object-cover" />
                 </div>
                 <div>
                   <h4 className="font-serif font-medium">James & Robert</h4>
@@ -173,6 +208,58 @@ const Index = () => {
                 "As a same-sex couple, we felt completely welcome and supported. MiAmour's inclusive approach and personalized matching made all the difference for us."
               </p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Venues Section */}
+      <section className="py-16 md:py-24 bg-white">
+        <div className="container mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-serif font-medium text-miamour-burgundy mb-4">
+              Dream Wedding Venues
+            </h2>
+            <p className="text-miamour-charcoal max-w-2xl mx-auto">
+              Explore stunning venues for your special day through our partnership network.
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="rounded-xl overflow-hidden shadow-lg group relative">
+              <img 
+                src="/lovable-uploads/8a4759fb-9f60-4206-86e6-0620a1c94dc7.png" 
+                alt="Beach wedding venue" 
+                className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-miamour-burgundy/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+                <div className="p-6 text-white">
+                  <h3 className="text-xl font-serif font-medium mb-2">Beachfront Paradise</h3>
+                  <p className="text-sm">Say "I do" with the sound of waves and a breathtaking ocean view.</p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="rounded-xl overflow-hidden shadow-lg group relative">
+              <img 
+                src="/lovable-uploads/c9811a52-485d-49b8-8c58-651d452794d1.png" 
+                alt="Indoor wedding venue" 
+                className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-miamour-burgundy/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+                <div className="p-6 text-white">
+                  <h3 className="text-xl font-serif font-medium mb-2">Elegant Ballroom</h3>
+                  <p className="text-sm">A timeless setting for a sophisticated celebration with your loved ones.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div className="mt-10 text-center">
+            <Link to="/venues">
+              <Button variant="outline" className="border-miamour-burgundy text-miamour-burgundy hover:bg-miamour-blush/30">
+                Explore All Venues
+              </Button>
+            </Link>
           </div>
         </div>
       </section>

@@ -1,11 +1,27 @@
 
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import { Heart } from "lucide-react";
+import { Heart, Menu, LogOut, User } from "lucide-react";
+import { useAuth } from '@/contexts/AuthContext';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate('/');
+  };
 
   return (
     <header className="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-miamour-blush">
@@ -34,16 +50,47 @@ const Navbar = () => {
 
           {/* CTA Buttons - Desktop */}
           <div className="hidden md:flex items-center space-x-4">
-            <Link to="/login">
-              <Button variant="outline" className="border-miamour-burgundy text-miamour-burgundy hover:bg-miamour-blush/30">
-                Sign In
-              </Button>
-            </Link>
-            <Link to="/register">
-              <Button className="bg-miamour-burgundy text-white hover:bg-miamour-burgundy/90">
-                Get Started
-              </Button>
-            </Link>
+            {user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" className="border-miamour-burgundy text-miamour-burgundy hover:bg-miamour-blush/30">
+                    <User className="h-4 w-4 mr-2" />
+                    My Account
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56">
+                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={() => navigate('/dashboard')}>
+                    Dashboard
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate('/profile')}>
+                    Profile
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate('/settings')}>
+                    Settings
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleSignOut}>
+                    <LogOut className="h-4 w-4 mr-2" />
+                    Sign out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <>
+                <Link to="/login">
+                  <Button variant="outline" className="border-miamour-burgundy text-miamour-burgundy hover:bg-miamour-blush/30">
+                    Sign In
+                  </Button>
+                </Link>
+                <Link to="/register">
+                  <Button className="bg-miamour-burgundy text-white hover:bg-miamour-burgundy/90">
+                    Get Started
+                  </Button>
+                </Link>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -51,13 +98,7 @@ const Navbar = () => {
             className="md:hidden focus:outline-none" 
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
-            <svg className="w-6 h-6 text-miamour-charcoal" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
-              {isMenuOpen ? (
-                <path d="M6 18L18 6M6 6l12 12"></path>
-              ) : (
-                <path d="M4 6h16M4 12h16M4 18h16"></path>
-              )}
-            </svg>
+            <Menu className="h-6 w-6 text-miamour-charcoal" />
           </button>
         </div>
 
@@ -76,18 +117,34 @@ const Navbar = () => {
             <Link to="/pricing" className="text-miamour-charcoal hover:text-miamour-burgundy transition-colors">
               Pricing
             </Link>
-            <div className="flex flex-col space-y-2 pt-2">
-              <Link to="/login">
-                <Button variant="outline" className="w-full border-miamour-burgundy text-miamour-burgundy hover:bg-miamour-blush/30">
-                  Sign In
+            {user ? (
+              <div className="flex flex-col space-y-2 pt-2">
+                <Link to="/dashboard">
+                  <Button variant="outline" className="w-full border-miamour-burgundy text-miamour-burgundy hover:bg-miamour-blush/30">
+                    Dashboard
+                  </Button>
+                </Link>
+                <Button
+                  className="w-full bg-miamour-burgundy text-white hover:bg-miamour-burgundy/90"
+                  onClick={handleSignOut}
+                >
+                  Sign Out
                 </Button>
-              </Link>
-              <Link to="/register">
-                <Button className="w-full bg-miamour-burgundy text-white hover:bg-miamour-burgundy/90">
-                  Get Started
-                </Button>
-              </Link>
-            </div>
+              </div>
+            ) : (
+              <div className="flex flex-col space-y-2 pt-2">
+                <Link to="/login">
+                  <Button variant="outline" className="w-full border-miamour-burgundy text-miamour-burgundy hover:bg-miamour-blush/30">
+                    Sign In
+                  </Button>
+                </Link>
+                <Link to="/register">
+                  <Button className="w-full bg-miamour-burgundy text-white hover:bg-miamour-burgundy/90">
+                    Get Started
+                  </Button>
+                </Link>
+              </div>
+            )}
           </nav>
         )}
       </div>

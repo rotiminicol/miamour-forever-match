@@ -1,31 +1,64 @@
 
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Heart } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Check if user is already logged in
+    const checkSession = async () => {
+      const { data } = await supabase.auth.getSession();
+      if (data.session) {
+        navigate('/');
+      }
+    };
+    
+    checkSession();
+  }, [navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
-    // This is a placeholder for authentication logic
-    // In a real application, you'd connect to Supabase or another auth provider
-    setTimeout(() => {
-      toast({
-        title: "Login functionality",
-        description: "This is a placeholder. Connect to Supabase for real authentication.",
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
       });
+
+      if (error) {
+        toast({
+          title: "Login failed",
+          description: error.message,
+          variant: "destructive",
+        });
+      } else if (data.user) {
+        toast({
+          title: "Login successful",
+          description: "Welcome back to MiAmour!",
+        });
+        navigate('/');
+      }
+    } catch (error) {
+      toast({
+        title: "Login error",
+        description: "An unexpected error occurred. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
       setIsLoading(false);
-    }, 1500);
+    }
   };
 
   return (
@@ -42,6 +75,14 @@ const Login = () => {
             <p className="text-miamour-charcoal mt-2">
               Sign in to continue your love journey
             </p>
+          </div>
+
+          <div className="mb-6 rounded-lg overflow-hidden">
+            <img 
+              src="/lovable-uploads/7f02a8d8-0b0a-46fd-bb7b-3d63b35e1677.png" 
+              alt="Couple in love" 
+              className="w-full h-40 object-cover"
+            />
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
