@@ -3,6 +3,19 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Heart, Users, Settings, Calendar, MessageSquare, User } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
+import { motion, AnimatePresence } from 'framer-motion';
+
+const menuLinks = [
+  { to: '/dashboard', label: 'Dashboard', icon: Heart },
+  { to: '/matches', label: 'My Matches', icon: Users },
+  { to: '/messages', label: 'Messages', icon: MessageSquare },
+  { to: '/appointments', label: 'Appointments', icon: Calendar },
+];
+
+const accountLinks = [
+  { to: '/profile', label: 'Profile', icon: User },
+  { to: '/settings', label: 'Settings', icon: Settings },
+];
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -17,19 +30,43 @@ const Sidebar = () => {
   // Only show sidebar for authenticated users
   if (!user) return null;
 
+  // Animation variants
+  const sidebarVariants = {
+    closed: { x: '-100%' },
+    open: { x: 0 },
+  };
+
+  // Only animate opacity for backdrop (pointerEvents is not animatable)
+  const backdropVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1 },
+  };
+
+  // Helper for active link
+  const isActive = (path: string) => location.pathname === path;
+
   return (
     <>
       {/* Mobile sidebar backdrop */}
-      {isOpen && (
-        <div 
-          className="md:hidden fixed inset-0 bg-black/50 z-40"
-          onClick={() => setIsOpen(false)} 
-        />
-      )}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            key="backdrop"
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
+            variants={backdropVariants}
+            transition={{ duration: 0.2 }}
+            className={`md:hidden fixed inset-0 z-40 bg-black/40 backdrop-blur-sm ${isOpen ? 'pointer-events-auto' : 'pointer-events-none'}`}
+            onClick={() => setIsOpen(false)}
+          />
+        )}
+      </AnimatePresence>
 
       {/* Sidebar toggle button for mobile */}
-      <button
-        className="md:hidden fixed left-4 top-20 z-50 bg-miamour-pink text-white p-2 rounded-full shadow-lg"
+      <motion.button
+        whileTap={{ scale: 0.9, rotate: 15 }}
+        className="md:hidden fixed left-4 top-6 z-50 bg-miamour-pink text-white p-2 rounded-full shadow-xl transition-all"
         onClick={() => setIsOpen(!isOpen)}
         aria-label={isOpen ? "Close sidebar" : "Open sidebar"}
       >
@@ -42,119 +79,107 @@ const Sidebar = () => {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
           </svg>
         )}
-      </button>
+      </motion.button>
 
       {/* Sidebar */}
-      <div 
-        className={`fixed md:static top-0 left-0 h-full bg-white border-r border-miamour-lightpink/50 w-64 z-50 transform transition-transform duration-300 ease-in-out ${
-          isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
-        }`}
-      >
-        <div className="p-6 border-b border-miamour-lightpink/50">
-          <div className="flex items-center mb-6">
-            <Heart className="h-8 w-8 text-miamour-pink mr-2" />
-            <span className="text-xl font-serif font-medium text-miamour-pink">MiAmour</span>
-          </div>
-          
-          <div className="flex items-center">
-            <div className="w-12 h-12 rounded-full bg-miamour-blush flex items-center justify-center text-miamour-pink mr-3">
-              <User className="h-6 w-6" />
+      <AnimatePresence>
+        {(isOpen || window.innerWidth >= 768) && (
+          <motion.aside
+            key="sidebar"
+            initial="closed"
+            animate="open"
+            exit="closed"
+            variants={sidebarVariants}
+            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+            className={`fixed md:static top-0 left-0 h-full w-64 z-50 bg-white/80 backdrop-blur-xl border-r border-miamour-lightpink/50 shadow-2xl md:shadow-none transition-all`}
+            style={{ boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.15)' }}
+          >
+            <div className="p-6 border-b border-miamour-lightpink/50">
+              <div className="flex items-center mb-6">
+                <img
+                  src="/lovable-uploads/miLogo2.png"
+                  alt="MiAmour Logo"
+                  className="h-10 w-10 mr-2 rounded-full shadow-md object-contain bg-white"
+                  style={{ background: 'white' }}
+                />
+                {/* Optionally, keep the brand name next to the logo */}
+                <span className="text-xl font-serif font-medium text-miamour-pink tracking-wide">miamour.me</span>
+              </div>
+              <div className="flex items-center">
+                <div className="w-12 h-12 rounded-full bg-miamour-blush flex items-center justify-center text-miamour-pink mr-3 shadow-lg">
+                  <User className="h-6 w-6" />
+                </div>
+                <div>
+                  <p className="font-medium">Welcome</p>
+                  <p className="text-sm text-gray-500 truncate">{user.email}</p>
+                </div>
+              </div>
             </div>
-            <div>
-              <p className="font-medium">Welcome</p>
-              <p className="text-sm text-gray-500 truncate">{user.email}</p>
-            </div>
-          </div>
-        </div>
 
-        <nav className="p-4">
-          <p className="text-xs font-semibold text-gray-500 mb-2 pl-2">MENU</p>
-          <ul className="space-y-1">
-            <li>
-              <Link 
-                to="/dashboard" 
-                className={`flex items-center px-4 py-3 rounded-lg transition-colors ${
-                  location.pathname === '/dashboard' 
-                    ? 'bg-miamour-pink text-white' 
-                    : 'hover:bg-miamour-blush/50 text-miamour-charcoal'
-                }`}
-              >
-                <Heart className="h-5 w-5 mr-3" />
-                <span>Dashboard</span>
-              </Link>
-            </li>
-            <li>
-              <Link 
-                to="/matches" 
-                className={`flex items-center px-4 py-3 rounded-lg transition-colors ${
-                  location.pathname === '/matches' 
-                    ? 'bg-miamour-pink text-white' 
-                    : 'hover:bg-miamour-blush/50 text-miamour-charcoal'
-                }`}
-              >
-                <Users className="h-5 w-5 mr-3" />
-                <span>My Matches</span>
-              </Link>
-            </li>
-            <li>
-              <Link 
-                to="/messages" 
-                className={`flex items-center px-4 py-3 rounded-lg transition-colors ${
-                  location.pathname === '/messages' 
-                    ? 'bg-miamour-pink text-white' 
-                    : 'hover:bg-miamour-blush/50 text-miamour-charcoal'
-                }`}
-              >
-                <MessageSquare className="h-5 w-5 mr-3" />
-                <span>Messages</span>
-              </Link>
-            </li>
-            <li>
-              <Link 
-                to="/appointments" 
-                className={`flex items-center px-4 py-3 rounded-lg transition-colors ${
-                  location.pathname === '/appointments' 
-                    ? 'bg-miamour-pink text-white' 
-                    : 'hover:bg-miamour-blush/50 text-miamour-charcoal'
-                }`}
-              >
-                <Calendar className="h-5 w-5 mr-3" />
-                <span>Appointments</span>
-              </Link>
-            </li>
-          </ul>
+            <nav className="p-4">
+              <p className="text-xs font-semibold text-gray-500 mb-2 pl-2">MENU</p>
+              <ul className="space-y-1 relative">
+                {menuLinks.map(({ to, label, icon: Icon }) => (
+                  <li key={to} className="relative">
+                    <Link
+                      to={to}
+                      className={`flex items-center px-4 py-3 rounded-lg transition-all duration-200 group ${
+                        isActive(to)
+                          ? 'bg-miamour-pink text-white shadow-lg'
+                          : 'hover:bg-miamour-blush/60 hover:scale-[1.03] text-miamour-charcoal'
+                      }`}
+                      style={{ position: 'relative', zIndex: 1 }}
+                    >
+                      <Icon className="h-5 w-5 mr-3 transition-transform duration-200 group-hover:scale-110" />
+                      <span>{label}</span>
+                      {isActive(to) && (
+                        <motion.span
+                          layoutId="active-indicator"
+                          className="absolute left-0 top-1/2 -translate-y-1/2 h-8 w-1 rounded bg-miamour-pink shadow-md"
+                          initial={{ scaleY: 0.5, opacity: 0 }}
+                          animate={{ scaleY: 1, opacity: 1 }}
+                          exit={{ scaleY: 0.5, opacity: 0 }}
+                          transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                        />
+                      )}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
 
-          <p className="text-xs font-semibold text-gray-500 mb-2 mt-6 pl-2">ACCOUNT</p>
-          <ul className="space-y-1">
-            <li>
-              <Link 
-                to="/profile" 
-                className={`flex items-center px-4 py-3 rounded-lg transition-colors ${
-                  location.pathname === '/profile' 
-                    ? 'bg-miamour-pink text-white' 
-                    : 'hover:bg-miamour-blush/50 text-miamour-charcoal'
-                }`}
-              >
-                <User className="h-5 w-5 mr-3" />
-                <span>Profile</span>
-              </Link>
-            </li>
-            <li>
-              <Link 
-                to="/settings" 
-                className={`flex items-center px-4 py-3 rounded-lg transition-colors ${
-                  location.pathname === '/settings' 
-                    ? 'bg-miamour-pink text-white' 
-                    : 'hover:bg-miamour-blush/50 text-miamour-charcoal'
-                }`}
-              >
-                <Settings className="h-5 w-5 mr-3" />
-                <span>Settings</span>
-              </Link>
-            </li>
-          </ul>
-        </nav>
-      </div>
+              <p className="text-xs font-semibold text-gray-500 mb-2 mt-6 pl-2">ACCOUNT</p>
+              <ul className="space-y-1 relative">
+                {accountLinks.map(({ to, label, icon: Icon }) => (
+                  <li key={to} className="relative">
+                    <Link
+                      to={to}
+                      className={`flex items-center px-4 py-3 rounded-lg transition-all duration-200 group ${
+                        isActive(to)
+                          ? 'bg-miamour-pink text-white shadow-lg'
+                          : 'hover:bg-miamour-blush/60 hover:scale-[1.03] text-miamour-charcoal'
+                      }`}
+                      style={{ position: 'relative', zIndex: 1 }}
+                    >
+                      <Icon className="h-5 w-5 mr-3 transition-transform duration-200 group-hover:scale-110" />
+                      <span>{label}</span>
+                      {isActive(to) && (
+                        <motion.span
+                          layoutId="active-indicator"
+                          className="absolute left-0 top-1/2 -translate-y-1/2 h-8 w-1 rounded bg-miamour-pink shadow-md"
+                          initial={{ scaleY: 0.5, opacity: 0 }}
+                          animate={{ scaleY: 1, opacity: 1 }}
+                          exit={{ scaleY: 0.5, opacity: 0 }}
+                          transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                        />
+                      )}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </motion.aside>
+        )}
+      </AnimatePresence>
     </>
   );
 };

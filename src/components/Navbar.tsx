@@ -2,8 +2,9 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import { Heart, Menu, LogOut, User } from "lucide-react";
+import { Menu, LogOut, User, ChevronDown } from "lucide-react";
 import { useAuth } from '@/contexts/AuthContext';
+import { motion, AnimatePresence } from "framer-motion";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,6 +16,7 @@ import {
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [hoveredLink, setHoveredLink] = useState<string | null>(null);
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
 
@@ -23,29 +25,73 @@ const Navbar = () => {
     navigate('/');
   };
 
+  const navLinks = [
+    { path: "/", label: "Home" },
+    { path: "/wedding-matching", label: "Wedding Matching" },
+    { path: "/couples-therapy", label: "Couples Therapy" },
+    { path: "/pricing", label: "Pricing" },
+  ];
+
   return (
-    <header className="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-miamour-lightpink">
+    <motion.header 
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+      className="bg-white/90 backdrop-blur-lg sticky top-0 z-50 border-b border-miamour-lightpink/30 shadow-sm"
+    >
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2">
-            <Heart className="h-6 w-6 text-miamour-pink" />
-            <span className="text-xl font-serif font-medium text-miamour-pink">MiAmour</span>
+          <Link to="/" className="flex items-center gap-2 group">
+            <motion.img
+              src="/lovable-uploads/miLogo2.png"
+              alt="miamour.me logo"
+              className="h-9 w-9 rounded-full shadow-md object-contain bg-white"
+              whileHover={{ rotate: [0, 15, -10, 5, 0], scale: 1.08 }}
+              transition={{ duration: 0.8 }}
+            />
+            <motion.span 
+              className="text-xl font-serif font-semibold text-transparent bg-clip-text bg-gradient-to-r from-miamour-pink to-miamour-pink-dark"
+              whileHover={{ scale: 1.05 }}
+            >
+              miamour.me
+            </motion.span>
           </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            <Link to="/" className="text-miamour-charcoal hover:text-miamour-pink transition-colors">
-              Home
-            </Link>
-            <Link to="/wedding-matching" className="text-miamour-charcoal hover:text-miamour-pink transition-colors">
-              Wedding Matching
-            </Link>
-            <Link to="/couples-therapy" className="text-miamour-charcoal hover:text-miamour-pink transition-colors">
-              Couples Therapy
-            </Link>
-            <Link to="/pricing" className="text-miamour-charcoal hover:text-miamour-pink transition-colors">
-              Pricing
-            </Link>
+            {navLinks.map((link) => (
+              <motion.div
+                key={link.path}
+                onHoverStart={() => setHoveredLink(link.path)}
+                onHoverEnd={() => setHoveredLink(null)}
+                className="relative"
+              >
+                <Link 
+                  to={link.path} 
+                  className="text-miamour-charcoal hover:text-miamour-pink transition-colors flex items-center gap-1"
+                >
+                  {link.label}
+                  {link.label === "Pricing" && (
+                    <motion.span 
+                      animate={{ y: hoveredLink === link.path ? 2 : 0 }}
+                      transition={{ type: "spring", stiffness: 500 }}
+                    >
+                      <ChevronDown className="h-4 w-4" />
+                    </motion.span>
+                  )}
+                </Link>
+                {hoveredLink === link.path && (
+                  <motion.div
+                    layoutId="navHoverIndicator"
+                    className="absolute bottom-0 left-0 w-full h-0.5 bg-miamour-pink"
+                    initial={{ scaleX: 0 }}
+                    animate={{ scaleX: 1 }}
+                    exit={{ scaleX: 0 }}
+                    transition={{ duration: 0.3, ease: "easeOut" }}
+                  />
+                )}
+              </motion.div>
+            ))}
           </nav>
 
           {/* CTA Buttons - Desktop */}
@@ -53,25 +99,51 @@ const Navbar = () => {
             {user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" className="border-miamour-pink text-miamour-pink hover:bg-miamour-blush/30">
+                  <Button 
+                    variant="outline" 
+                    className="border-miamour-pink text-miamour-pink hover:bg-miamour-blush/30 group relative overflow-hidden"
+                  >
+                    <motion.span
+                      className="absolute inset-0 bg-miamour-pink/10 group-hover:bg-miamour-pink/20"
+                      initial={{ opacity: 0 }}
+                      whileHover={{ opacity: 1 }}
+                      transition={{ duration: 0.3 }}
+                    />
                     <User className="h-4 w-4 mr-2" />
-                    My Account
+                    <span>My Account</span>
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56">
-                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => navigate('/dashboard')}>
+                <DropdownMenuContent 
+                  align="end" 
+                  className="w-56 rounded-lg shadow-lg border border-miamour-lightpink/20"
+                >
+                  <DropdownMenuLabel className="font-serif text-miamour-pink">
+                    My Account
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator className="bg-miamour-lightpink/20" />
+                  <DropdownMenuItem 
+                    onClick={() => navigate('/dashboard')}
+                    className="focus:bg-miamour-blush/20 focus:text-miamour-pink"
+                  >
                     Dashboard
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => navigate('/profile')}>
+                  <DropdownMenuItem 
+                    onClick={() => navigate('/profile')}
+                    className="focus:bg-miamour-blush/20 focus:text-miamour-pink"
+                  >
                     Profile
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => navigate('/settings')}>
+                  <DropdownMenuItem 
+                    onClick={() => navigate('/settings')}
+                    className="focus:bg-miamour-blush/20 focus:text-miamour-pink"
+                  >
                     Settings
                   </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={handleSignOut}>
+                  <DropdownMenuSeparator className="bg-miamour-lightpink/20" />
+                  <DropdownMenuItem 
+                    onClick={handleSignOut}
+                    className="focus:bg-red-50 focus:text-red-600"
+                  >
                     <LogOut className="h-4 w-4 mr-2" />
                     Sign out
                   </DropdownMenuItem>
@@ -80,12 +152,27 @@ const Navbar = () => {
             ) : (
               <>
                 <Link to="/login">
-                  <Button variant="outline" className="border-miamour-pink text-miamour-pink hover:bg-miamour-blush/30">
+                  <Button 
+                    variant="outline" 
+                    className="border-miamour-pink text-miamour-pink hover:bg-miamour-blush/30 relative overflow-hidden"
+                  >
+                    <motion.span
+                      className="absolute inset-0 bg-miamour-pink/10"
+                      whileHover={{ scale: 1.5, opacity: 0 }}
+                      transition={{ duration: 0.5 }}
+                    />
                     Sign In
                   </Button>
                 </Link>
                 <Link to="/register">
-                  <Button className="bg-miamour-pink text-white hover:bg-miamour-pink/90">
+                  <Button 
+                    className="bg-gradient-to-r from-miamour-pink to-miamour-pink-dark text-white hover:from-miamour-pink-dark hover:to-miamour-pink relative overflow-hidden shadow-lg hover:shadow-miamour-pink/20"
+                  >
+                    <motion.span
+                      className="absolute inset-0 bg-white/10"
+                      whileHover={{ scale: 1.5, opacity: 0 }}
+                      transition={{ duration: 0.5 }}
+                    />
                     Get Started
                   </Button>
                 </Link>
@@ -94,62 +181,91 @@ const Navbar = () => {
           </div>
 
           {/* Mobile Menu Button */}
-          <button 
+          <motion.button 
             className="md:hidden focus:outline-none" 
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label="Toggle menu"
+            whileTap={{ scale: 0.95 }}
           >
             <Menu className="h-6 w-6 text-miamour-charcoal" />
-          </button>
+          </motion.button>
         </div>
 
         {/* Mobile Navigation */}
-        {isMenuOpen && (
-          <nav className="md:hidden py-4 flex flex-col space-y-4 animate-fade-in">
-            <Link to="/" className="text-miamour-charcoal hover:text-miamour-pink transition-colors">
-              Home
-            </Link>
-            <Link to="/wedding-matching" className="text-miamour-charcoal hover:text-miamour-pink transition-colors">
-              Wedding Matching
-            </Link>
-            <Link to="/couples-therapy" className="text-miamour-charcoal hover:text-miamour-pink transition-colors">
-              Couples Therapy
-            </Link>
-            <Link to="/pricing" className="text-miamour-charcoal hover:text-miamour-pink transition-colors">
-              Pricing
-            </Link>
-            {user ? (
-              <div className="flex flex-col space-y-2 pt-2">
-                <Link to="/dashboard">
-                  <Button variant="outline" className="w-full border-miamour-pink text-miamour-pink hover:bg-miamour-blush/30">
-                    Dashboard
-                  </Button>
-                </Link>
-                <Button
-                  className="w-full bg-miamour-pink text-white hover:bg-miamour-pink/90"
-                  onClick={handleSignOut}
-                >
-                  Sign Out
-                </Button>
+        <AnimatePresence>
+          {isMenuOpen && (
+            <motion.nav 
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3 }}
+              className="md:hidden overflow-hidden"
+            >
+              <div className="py-4 flex flex-col space-y-4">
+                {navLinks.map((link) => (
+                  <motion.div
+                    key={link.path}
+                    initial={{ x: -20, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <Link 
+                      to={link.path} 
+                      className="block py-2 text-miamour-charcoal hover:text-miamour-pink transition-colors"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      {link.label}
+                    </Link>
+                  </motion.div>
+                ))}
+                {user ? (
+                  <div className="flex flex-col space-y-2 pt-2">
+                    <Link to="/dashboard">
+                      <Button 
+                        variant="outline" 
+                        className="w-full border-miamour-pink text-miamour-pink hover:bg-miamour-blush/30"
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        Dashboard
+                      </Button>
+                    </Link>
+                    <Button
+                      className="w-full bg-gradient-to-r from-miamour-pink to-miamour-pink-dark text-white"
+                      onClick={() => {
+                        handleSignOut();
+                        setIsMenuOpen(false);
+                      }}
+                    >
+                      Sign Out
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="flex flex-col space-y-2 pt-2">
+                    <Link to="/login">
+                      <Button 
+                        variant="outline" 
+                        className="w-full border-miamour-pink text-miamour-pink hover:bg-miamour-blush/30"
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        Sign In
+                      </Button>
+                    </Link>
+                    <Link to="/register">
+                      <Button 
+                        className="w-full bg-gradient-to-r from-miamour-pink to-miamour-pink-dark text-white"
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        Get Started
+                      </Button>
+                    </Link>
+                  </div>
+                )}
               </div>
-            ) : (
-              <div className="flex flex-col space-y-2 pt-2">
-                <Link to="/login">
-                  <Button variant="outline" className="w-full border-miamour-pink text-miamour-pink hover:bg-miamour-blush/30">
-                    Sign In
-                  </Button>
-                </Link>
-                <Link to="/register">
-                  <Button className="w-full bg-miamour-pink text-white hover:bg-miamour-pink/90">
-                    Get Started
-                  </Button>
-                </Link>
-              </div>
-            )}
-          </nav>
-        )}
+            </motion.nav>
+          )}
+        </AnimatePresence>
       </div>
-    </header>
+    </motion.header>
   );
 };
 
