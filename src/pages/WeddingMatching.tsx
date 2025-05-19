@@ -1,9 +1,17 @@
 
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Heart, CheckCircle, Calendar, User, Settings } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 
 const WeddingMatching = () => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  const handleStartMatching = () => {
+    navigate("/start-matching");
+  };
+
   return (
     <>
       {/* Hero Section */}
@@ -32,11 +40,12 @@ const WeddingMatching = () => {
                 </div>
               </div>
               <div className="mt-8">
-                <Link to="/register">
-                  <Button className="bg-miamour-burgundy text-white hover:bg-miamour-burgundy/90 text-lg px-8 py-6 mr-4">
-                    Start Matching
-                  </Button>
-                </Link>
+                <Button 
+                  onClick={handleStartMatching} 
+                  className="bg-miamour-burgundy text-white hover:bg-miamour-burgundy/90 text-lg px-8 py-6 mr-4"
+                >
+                  Start Matching
+                </Button>
                 <Link to="/pricing">
                   <Button variant="outline" className="border-miamour-burgundy text-miamour-burgundy hover:bg-miamour-blush/30">
                     View Plans
