@@ -1,7 +1,79 @@
 
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { Check, Heart, Calendar, HandHeart } from "lucide-react";
+import { Check, Heart, Calendar, HandHeart, Star } from "lucide-react";
+
+const plans = [
+  {
+    id: 'blossom',
+    name: 'Blossom Package',
+    price: '₦75,000',
+    priceUSD: '$20',
+    priceEUR: '€18',
+    period: '1 month',
+    features: [
+      'Exclusive matchmaking within your country',
+      'Access to live sessions',
+      'Basic profile verification',
+      'Standard customer support'
+    ],
+    icon: <Star className="w-6 h-6 text-pink-600" />,
+    color: 'from-pink-500 to-rose-500'
+  },
+  {
+    id: 'harmony',
+    name: 'Harmony Package',
+    price: '₦125,000',
+    priceUSD: '$33',
+    priceEUR: '€30',
+    period: '3 months',
+    features: [
+      'Exclusive matchmaking within and outside your country',
+      'Access to live sessions',
+      'Priority profile verification',
+      'Premium customer support',
+      'Advanced matching algorithms'
+    ],
+    icon: <Star className="w-6 h-6 text-purple-600" />,
+    color: 'from-purple-500 to-indigo-500'
+  },
+  {
+    id: 'forever',
+    name: 'My Forever Package',
+    price: '₦225,000',
+    priceUSD: '$66',
+    priceEUR: '€60',
+    period: '6 months',
+    features: [
+      'Personal matches',
+      'Private sessions',
+      'Access to high-profile members',
+      'Matches within and outside Nigeria',
+      'VIP customer support',
+      'Exclusive events access'
+    ],
+    icon: <Star className="w-6 h-6 text-amber-500" />,
+    color: 'from-amber-500 to-orange-500'
+  },
+  {
+    id: 'personalized',
+    name: 'Personalized Matching',
+    price: '₦475,000',
+    priceUSD: '$125',
+    priceEUR: '€115',
+    period: '1 year',
+    features: [
+      'Dedicated matchmaker',
+      'Customized matching strategy',
+      'Unlimited private sessions',
+      'Global elite network access',
+      '24/7 VIP support',
+      'Premium event invitations'
+    ],
+    icon: <Heart className="w-6 h-6 text-red-500" />,
+    color: 'from-red-500 to-pink-500'
+  }
+];
 
 const Pricing = () => {
   return (
@@ -21,141 +93,58 @@ const Pricing = () => {
       {/* Pricing Plans */}
       <section className="py-16 bg-white">
         <div className="container mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Basic Plan */}
-            <div className="bg-miamour-cream rounded-lg shadow-md overflow-hidden border border-miamour-blush/50 flex flex-col">
-              <div className="p-8 text-center border-b border-miamour-blush">
-                <Heart className="h-12 w-12 text-miamour-burgundy mx-auto mb-4" />
-                <h3 className="text-2xl font-serif font-medium text-miamour-burgundy mb-2">Basic</h3>
-                <div className="mb-4">
-                  <span className="text-4xl font-bold">$29</span>
-                  <span className="text-miamour-charcoal">/month</span>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            {plans.map((plan, idx) => (
+              <div
+                key={plan.id}
+                className={`
+                  rounded-lg shadow-md overflow-hidden border
+                  flex flex-col
+                  ${idx === 2 ? "md:-translate-y-4 scale-105 shadow-xl border-2 border-miamour-burgundy" : "border-miamour-blush/50"}
+                  bg-gradient-to-br ${plan.color} bg-opacity-10
+                  bg-white
+                `}
+                style={{ backgroundBlendMode: "lighten" }}
+              >
+                <div className="p-8 text-center border-b border-miamour-blush bg-white/80">
+                  <div className="flex justify-center mb-4">{plan.icon}</div>
+                  <h3 className="text-2xl font-serif font-medium text-miamour-burgundy mb-2">{plan.name}</h3>
+                  <div className="mb-2 flex flex-col items-center">
+                    <span className="text-3xl font-bold text-miamour-burgundy">{plan.price}</span>
+                    <span className="text-xs text-miamour-charcoal flex gap-2">
+                      <span>{plan.priceUSD}</span>
+                      <span>{plan.priceEUR}</span>
+                      <span className="text-miamour-charcoal">/ {plan.period}</span>
+                    </span>
+                  </div>
+                  <p className="text-sm text-miamour-charcoal">{plan.features[0]}</p>
                 </div>
-                <p className="text-sm text-miamour-charcoal">Get started with our essential matching service</p>
-              </div>
-              <div className="p-8 flex-grow">
-                <ul className="space-y-4">
-                  <li className="flex items-start">
-                    <Check className="h-5 w-5 text-miamour-gold mr-2 mt-0.5 flex-shrink-0" />
-                    <span>Basic profile creation</span>
-                  </li>
-                  <li className="flex items-start">
-                    <Check className="h-5 w-5 text-miamour-gold mr-2 mt-0.5 flex-shrink-0" />
-                    <span>5 matches per month</span>
-                  </li>
-                  <li className="flex items-start">
-                    <Check className="h-5 w-5 text-miamour-gold mr-2 mt-0.5 flex-shrink-0" />
-                    <span>Basic compatibility reports</span>
-                  </li>
-                  <li className="flex items-start">
-                    <Check className="h-5 w-5 text-miamour-gold mr-2 mt-0.5 flex-shrink-0" />
-                    <span>Limited messaging with matches</span>
-                  </li>
-                </ul>
-              </div>
-              <div className="p-8 border-t border-miamour-blush">
-                <Link to="/register">
-                  <Button variant="outline" className="w-full border-miamour-burgundy text-miamour-burgundy hover:bg-miamour-blush/30">
-                    Get Started
-                  </Button>
-                </Link>
-              </div>
-            </div>
-
-            {/* Premium Plan - Highlighted */}
-            <div className="bg-white rounded-lg shadow-xl overflow-hidden border-2 border-miamour-burgundy flex flex-col transform md:-translate-y-4 scale-105">
-              <div className="bg-miamour-burgundy text-white p-2 text-center text-sm font-medium">
-                Most Popular
-              </div>
-              <div className="p-8 text-center border-b border-miamour-blush">
-                <Heart className="h-12 w-12 text-miamour-gold mx-auto mb-4" />
-                <h3 className="text-2xl font-serif font-medium text-miamour-burgundy mb-2">Premium</h3>
-                <div className="mb-4">
-                  <span className="text-4xl font-bold">$89</span>
-                  <span className="text-miamour-charcoal">/month</span>
+                <div className="p-8 flex-grow bg-white/90">
+                  <ul className="space-y-4">
+                    {plan.features.map((feature, i) => (
+                      <li className="flex items-start" key={i}>
+                        <Check className="h-5 w-5 text-miamour-gold mr-2 mt-0.5 flex-shrink-0" />
+                        <span>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-                <p className="text-sm text-miamour-charcoal">Enhanced matching and basic therapy services</p>
-              </div>
-              <div className="p-8 flex-grow">
-                <ul className="space-y-4">
-                  <li className="flex items-start">
-                    <Check className="h-5 w-5 text-miamour-gold mr-2 mt-0.5 flex-shrink-0" />
-                    <span>Advanced profile with personality assessment</span>
-                  </li>
-                  <li className="flex items-start">
-                    <Check className="h-5 w-5 text-miamour-gold mr-2 mt-0.5 flex-shrink-0" />
-                    <span>Unlimited matches</span>
-                  </li>
-                  <li className="flex items-start">
-                    <Check className="h-5 w-5 text-miamour-gold mr-2 mt-0.5 flex-shrink-0" />
-                    <span>Detailed compatibility analysis</span>
-                  </li>
-                  <li className="flex items-start">
-                    <Check className="h-5 w-5 text-miamour-gold mr-2 mt-0.5 flex-shrink-0" />
-                    <span>Unlimited messaging with matches</span>
-                  </li>
-                  <li className="flex items-start">
-                    <Check className="h-5 w-5 text-miamour-gold mr-2 mt-0.5 flex-shrink-0" />
-                    <span>1 therapy session per month</span>
-                  </li>
-                  <li className="flex items-start">
-                    <Check className="h-5 w-5 text-miamour-gold mr-2 mt-0.5 flex-shrink-0" />
-                    <span>Relationship workshops access</span>
-                  </li>
-                </ul>
-              </div>
-              <div className="p-8 border-t border-miamour-blush">
-                <Link to="/register">
-                  <Button className="w-full bg-miamour-burgundy text-white hover:bg-miamour-burgundy/90">
-                    Get Started
-                  </Button>
-                </Link>
-              </div>
-            </div>
-
-            {/* Ultimate Plan */}
-            <div className="bg-miamour-cream rounded-lg shadow-md overflow-hidden border border-miamour-blush/50 flex flex-col">
-              <div className="p-8 text-center border-b border-miamour-blush">
-                <Heart className="h-12 w-12 text-miamour-burgundy mx-auto mb-4" />
-                <h3 className="text-2xl font-serif font-medium text-miamour-burgundy mb-2">Ultimate</h3>
-                <div className="mb-4">
-                  <span className="text-4xl font-bold">$149</span>
-                  <span className="text-miamour-charcoal">/month</span>
+                <div className="p-8 border-t border-miamour-blush bg-white/80">
+                  <Link to="/register">
+                    <Button
+                      className={`w-full ${
+                        idx === 2
+                          ? "bg-miamour-burgundy text-white hover:bg-miamour-burgundy/90"
+                          : "border-miamour-burgundy text-miamour-burgundy hover:bg-miamour-blush/30"
+                      }`}
+                      variant={idx === 2 ? "default" : "outline"}
+                    >
+                      Get Started
+                    </Button>
+                  </Link>
                 </div>
-                <p className="text-sm text-miamour-charcoal">Complete matching and comprehensive therapy</p>
               </div>
-              <div className="p-8 flex-grow">
-                <ul className="space-y-4">
-                  <li className="flex items-start">
-                    <Check className="h-5 w-5 text-miamour-gold mr-2 mt-0.5 flex-shrink-0" />
-                    <span>All Premium features</span>
-                  </li>
-                  <li className="flex items-start">
-                    <Check className="h-5 w-5 text-miamour-gold mr-2 mt-0.5 flex-shrink-0" />
-                    <span>Priority matching</span>
-                  </li>
-                  <li className="flex items-start">
-                    <Check className="h-5 w-5 text-miamour-gold mr-2 mt-0.5 flex-shrink-0" />
-                    <span>4 therapy sessions per month</span>
-                  </li>
-                  <li className="flex items-start">
-                    <Check className="h-5 w-5 text-miamour-gold mr-2 mt-0.5 flex-shrink-0" />
-                    <span>1-on-1 relationship coaching</span>
-                  </li>
-                  <li className="flex items-start">
-                    <Check className="h-5 w-5 text-miamour-gold mr-2 mt-0.5 flex-shrink-0" />
-                    <span>Exclusive events access</span>
-                  </li>
-                </ul>
-              </div>
-              <div className="p-8 border-t border-miamour-blush">
-                <Link to="/register">
-                  <Button variant="outline" className="w-full border-miamour-burgundy text-miamour-burgundy hover:bg-miamour-blush/30">
-                    Get Started
-                  </Button>
-                </Link>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
