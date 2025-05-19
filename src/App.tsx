@@ -24,45 +24,49 @@ import Dashboard from "./pages/Dashboard";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import NotFound from "./pages/NotFound";
 
-const queryClient = new QueryClient();
-
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <AuthProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <div className="flex flex-col min-h-screen">
-            <Navbar />
-            <div className="flex flex-grow w-full">
-              <Sidebar />
-              <main className="flex-grow w-full">
-                <Routes>
-                  <Route path="/" element={<Index />} />
-                  <Route path="/wedding-matching" element={<WeddingMatching />} />
-                  <Route path="/start-matching" element={<MatchStartPage />} />
-                  <Route path="/profile-setup" element={<ProfileSetup />} />
-                  <Route path="/match-preferences" element={<MatchPreferences />} />
-                  <Route path="/payment" element={<Payment />} />
-                  <Route path="/profile" element={<Profile />} />
-                  <Route path="/matches" element={<MatchingDashboard />} />
-                  <Route path="/couples-therapy" element={<CouplesTherapy />} />
-                  <Route path="/pricing" element={<Pricing />} />
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/register" element={<Register />} />
-                  <Route path="/dashboard" element={<Dashboard />} />
-                  <Route path="/payment-success" element={<PaymentSuccess />} />
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
-              </main>
+// Create a new QueryClient in a functional component rather than at module level
+const App = () => {
+  // Instantiate QueryClient inside the component to ensure proper React context
+  const queryClient = new QueryClient();
+  
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <AuthProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <div className="flex flex-col min-h-screen">
+              <Navbar />
+              <div className="flex flex-grow w-full">
+                <Sidebar />
+                <main className="flex-grow w-full">
+                  <Routes>
+                    <Route path="/" element={<Index />} />
+                    <Route path="/wedding-matching" element={<WeddingMatching />} />
+                    <Route path="/start-matching" element={<MatchStartPage />} />
+                    <Route path="/profile-setup" element={<ProfileSetup />} />
+                    <Route path="/match-preferences" element={<MatchPreferences />} />
+                    <Route path="/payment" element={<Payment />} />
+                    <Route path="/profile" element={<Profile />} />
+                    <Route path="/matches" element={<MatchingDashboard />} />
+                    <Route path="/couples-therapy" element={<CouplesTherapy />} />
+                    <Route path="/pricing" element={<Pricing />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/register" element={<Register />} />
+                    <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="/payment-success" element={<PaymentSuccess />} />
+                    <Route path="*" element={<NotFound />} />
+                  </Routes>
+                </main>
+              </div>
+              <Footer />
             </div>
-            <Footer />
-          </div>
-        </BrowserRouter>
-      </AuthProvider>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+          </BrowserRouter>
+        </AuthProvider>
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+};
 
 export default App;
