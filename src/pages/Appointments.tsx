@@ -34,6 +34,7 @@ import {
   Star, 
   ChevronRight, 
   Check,
+  X, // Added the missing X icon import
 } from "lucide-react";
 
 // Types
