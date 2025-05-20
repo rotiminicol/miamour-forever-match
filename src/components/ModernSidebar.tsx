@@ -7,7 +7,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { motion } from 'framer-motion';
 
 const ModernSidebar = () => {
-  const { logout, user } = useAuth();
+  const { signOut, user } = useAuth();
   const [isExpanded, setIsExpanded] = useState(true);
   const location = useLocation();
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
@@ -85,7 +85,7 @@ const ModernSidebar = () => {
   );
 
   const handleLogout = () => {
-    logout();
+    signOut();
   };
 
   // Sidebar variants for animation

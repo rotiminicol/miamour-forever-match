@@ -1,6 +1,7 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,6 +20,11 @@ const Messages = () => {
   const { toast } = useToast();
   const { addNotification } = useNotifications();
   const { user } = useAuth();
+  const navigate = useNavigate();
+  
+  // Active conversation details based on ID
+  const activeConversationDetails = activeConversation ? 
+    conversations.find(conv => conv.id === activeConversation) : null;
   
   // Filter conversations based on search term
   const filteredConversations = conversations.filter(
@@ -122,7 +128,7 @@ const Messages = () => {
         </div>
         
         {/* Chat area */}
-        {activeConversation ? (
+        {activeConversation && activeConversationDetails ? (
           <div className="hidden md:flex flex-col flex-grow">
             {/* Chat header */}
             <div className="p-4 border-b border-gray-100 flex justify-between items-center bg-white">
