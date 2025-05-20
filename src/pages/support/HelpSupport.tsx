@@ -260,7 +260,7 @@ const HelpSupport = () => {
                   <li>
                     <a href="#" className="flex justify-between items-center hover:bg-gray-50 p-3 rounded-md transition-colors">
                       <div>
-                        <h3 className="font-medium text-miamour-burgundy">Getting Started with MiAmour</h3>
+                        <h3 className="font-medium text-miamour-burgundy">Getting Started with miamour</h3>
                         <p className="text-sm text-gray-600">A comprehensive guide for new members</p>
                       </div>
                       <Badge className="bg-miamour-pink text-white">New</Badge>
@@ -352,7 +352,7 @@ const HelpSupport = () => {
                       </div>
                       <div>
                         <h3 className="font-medium text-miamour-burgundy">Phone Support</h3>
-                        <p className="text-sm text-gray-600">1-800-MIAMOUR</p>
+                        <p className="text-sm text-gray-600">1-800-miamour</p>
                         <p className="text-xs text-gray-500 mt-1">Mon-Fri, 9am-7pm EST</p>
                       </div>
                     </div>

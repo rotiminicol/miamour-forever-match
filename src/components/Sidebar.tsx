@@ -98,7 +98,7 @@ const Sidebar = () => {
               <div className="flex items-center mb-6">
                 <img
                   src="/lovable-uploads/miLogo2.png"
-                  alt="MiAmour Logo"
+                  alt="miamour Logo"
                   className="h-10 w-10 mr-2 rounded-full shadow-md object-contain bg-white"
                   style={{ background: 'white' }}
                 />

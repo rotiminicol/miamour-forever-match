@@ -22,19 +22,19 @@ const FAQs = () => {
       name: "General",
       items: [
         {
-          question: "What is MiAmour?",
-          answer: "MiAmour is a comprehensive relationship platform that combines matchmaking services with relationship counseling and support. Our mission is to help individuals find and nurture meaningful romantic connections."
+          question: "What is miamour?",
+          answer: "miamour is a comprehensive relationship platform that combines matchmaking services with relationship counseling and support. Our mission is to help individuals find and nurture meaningful romantic connections."
         },
         {
-          question: "How is MiAmour different from other dating apps?",
-          answer: "Unlike traditional dating apps, MiAmour takes a holistic approach to relationships. We combine AI-powered matching with human expertise, offer relationship counseling services, and provide ongoing support throughout your journey. We focus on quality connections rather than endless swiping."
+          question: "How is miamour different from other dating apps?",
+          answer: "Unlike traditional dating apps, miamour takes a holistic approach to relationships. We combine AI-powered matching with human expertise, offer relationship counseling services, and provide ongoing support throughout your journey. We focus on quality connections rather than endless swiping."
         },
         {
-          question: "Is MiAmour available in my area?",
-          answer: "MiAmour is currently available in major metropolitan areas across the United States, with plans to expand to more locations soon. Check our location settings to see if services are available in your area."
+          question: "Is miamour available in my area?",
+          answer: "miamour is currently available in major metropolitan areas across the United States, with plans to expand to more locations soon. Check our location settings to see if services are available in your area."
         },
         {
-          question: "Do I need a subscription to use MiAmour?",
+          question: "Do I need a subscription to use miamour?",
           answer: "While you can create a basic profile for free, a subscription is required to access our full range of services including messaging, viewing matches, and participating in counseling sessions. We offer various subscription tiers to meet different needs and budgets."
         }
       ]
@@ -48,7 +48,7 @@ const FAQs = () => {
           answer: "To create an account, click the 'Sign Up' button on our homepage and follow the prompts. You'll need to provide basic information, verify your email, and complete some initial profile questions to get started."
         },
         {
-          question: "Can I use MiAmour without sharing my personal information?",
+          question: "Can I use miamour without sharing my personal information?",
           answer: "While we require basic information to create your account and provide our services, we take your privacy seriously. You control what information is visible to other users, and you can adjust your privacy settings at any time."
         },
         {
@@ -71,7 +71,7 @@ const FAQs = () => {
         },
         {
           question: "Why am I not getting many matches?",
-          answer: "MiAmour focuses on quality over quantity. We carefully curate potential matches rather than showing endless profiles. Complete your profile with detailed information and preferences to improve your matching potential. Also, consider broadening your preferences if they're currently very specific."
+          answer: "miamour focuses on quality over quantity. We carefully curate potential matches rather than showing endless profiles. Complete your profile with detailed information and preferences to improve your matching potential. Also, consider broadening your preferences if they're currently very specific."
         },
         {
           question: "Can I search for specific types of people?",
@@ -89,7 +89,7 @@ const FAQs = () => {
       items: [
         {
           question: "Who can message me?",
-          answer: "To reduce unwanted messages, only mutual matches can message each other on MiAmour. This ensures that conversations start on the basis of mutual interest."
+          answer: "To reduce unwanted messages, only mutual matches can message each other on miamour. This ensures that conversations start on the basis of mutual interest."
         },
         {
           question: "Are messages monitored?",
@@ -110,8 +110,8 @@ const FAQs = () => {
       name: "Services & Features",
       items: [
         {
-          question: "What therapy services does MiAmour offer?",
-          answer: "MiAmour offers individual counseling, couples therapy, and relationship coaching. Our licensed therapists specialize in relationship dynamics and can help with communication issues, conflict resolution, intimacy concerns, and more."
+          question: "What therapy services does miamour offer?",
+          answer: "miamour offers individual counseling, couples therapy, and relationship coaching. Our licensed therapists specialize in relationship dynamics and can help with communication issues, conflict resolution, intimacy concerns, and more."
         },
         {
           question: "How do I book a therapy session?",

@@ -47,7 +47,7 @@ const Login = () => {
       } else if (data.user) {
         toast({
           title: "Login successful",
-          description: "Welcome back to MiAmour!",
+          description: "Welcome back to miamour!",
         });
         navigate('/');
       }
@@ -149,7 +149,7 @@ const Login = () => {
         <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent flex items-end p-12">
           <div>
             <h2 className="text-4xl font-serif text-white mb-4">Find Your Perfect Match</h2>
-            <p className="text-white/90">Join thousands of happy couples who found love through MiAmour</p>
+            <p className="text-white/90">Join thousands of happy couples who found love through miamour</p>
           </div>
         </div>
       </div>

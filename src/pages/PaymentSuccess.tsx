@@ -16,7 +16,7 @@ const PaymentSuccess = () => {
               Payment Successful!
             </h1>
             <p className="text-miamour-charcoal mt-4 mb-8">
-              Thank you for your purchase. Your journey with MiAmour has officially begun. We're excited to help you find and nurture love.
+              Thank you for your purchase. Your journey with miamour has officially begun. We're excited to help you find and nurture love.
             </p>
             
             <div className="bg-miamour-cream p-6 rounded-lg mb-8">

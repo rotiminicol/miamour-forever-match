@@ -90,7 +90,7 @@ const ContactUs = () => {
                 </div>
                 <div>
                   <h3 className="font-medium text-miamour-burgundy">Phone</h3>
-                  <p className="text-miamour-charcoal">1-800-MIAMOUR (642-6687)</p>
+                  <p className="text-miamour-charcoal">1-800-miamour (642-6687)</p>
                 </div>
               </div>
               
@@ -237,7 +237,7 @@ const ContactUs = () => {
         <div className="text-center max-w-3xl mx-auto">
           <h2 className="text-2xl font-serif font-medium text-miamour-burgundy mb-4">We Value Your Feedback</h2>
           <p className="text-miamour-charcoal mb-6">
-            At MiAmour, we're constantly striving to improve our services. Your feedback helps us create
+            At miamour, we're constantly striving to improve our services. Your feedback helps us create
             a better experience for everyone in our community.
           </p>
           <Button className="bg-miamour-burgundy text-white">

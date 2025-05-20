@@ -4,7 +4,7 @@ import { Heart, Users, Settings } from "lucide-react";
 import { motion } from "framer-motion";
 
 // Create a custom HandHeart icon since it's not in the standard lucide-react package
-const HandHeart = (props: any) => (
+const HandHeart = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -45,7 +45,7 @@ const Index = () => {
               <span className="text-miamour-gold">Build Lasting Love</span>
             </h1>
             <p className="text-lg md:text-xl text-miamour-charcoal max-w-2xl mx-auto mb-10 bg-white/70 p-4 rounded-lg">
-              MiAmour helps couples find their perfect match and nurture their relationships with expert therapy and guidance.
+              miamour helps couples find their perfect match and nurture their relationships with expert therapy and guidance.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link to="/register">
@@ -71,7 +71,7 @@ const Index = () => {
               Our Services
             </h2>
             <p className="text-miamour-charcoal max-w-2xl mx-auto">
-              Whether you're looking for love or nurturing your existing relationship, MiAmour offers premium services to help you succeed.
+              Whether you're looking for love or nurturing your existing relationship, miamour offers premium services to help you succeed.
             </p>
           </div>
 
@@ -159,7 +159,7 @@ const Index = () => {
               Success Stories
             </h2>
             <p className="text-miamour-charcoal max-w-2xl mx-auto">
-              Hear from couples who found love and strengthened their relationships with MiAmour.
+              Hear from couples who found love and strengthened their relationships with miamour.
             </p>
           </div>
 
@@ -175,7 +175,7 @@ const Index = () => {
                 </div>
               </div>
               <p className="text-miamour-charcoal italic">
-                "MiAmour's matching algorithm was spot on! We connected instantly and are now planning our wedding. The relationship coaching helped us build a strong foundation."
+                "miamour's matching algorithm was spot on! We connected instantly and are now planning our wedding. The relationship coaching helped us build a strong foundation."
               </p>
             </div>
             
@@ -190,7 +190,7 @@ const Index = () => {
                 </div>
               </div>
               <p className="text-miamour-charcoal italic">
-                "After 5 years of marriage, we hit a rough patch. The couples therapy at MiAmour helped us reconnect and fall in love all over again. Truly transformative."
+                "After 5 years of marriage, we hit a rough patch. The couples therapy at miamour helped us reconnect and fall in love all over again. Truly transformative."
               </p>
             </div>
             
@@ -205,7 +205,7 @@ const Index = () => {
                 </div>
               </div>
               <p className="text-miamour-charcoal italic">
-                "As a same-sex couple, we felt completely welcome and supported. MiAmour's inclusive approach and personalized matching made all the difference for us."
+                "As a same-sex couple, we felt completely welcome and supported. miamour's inclusive approach and personalized matching made all the difference for us."
               </p>
             </div>
           </div>
@@ -271,7 +271,7 @@ const Index = () => {
             Ready to Begin Your Love Story?
           </h2>
           <p className="text-lg max-w-2xl mx-auto mb-10 text-gray-100">
-            Join thousands of couples who have found love and transformed their relationships with MiAmour.
+            Join thousands of couples who have found love and transformed their relationships with miamour.
           </p>
           <Link to="/register">
             <Button className="bg-miamour-gold text-miamour-burgundy hover:bg-miamour-gold/90 text-lg px-8 py-6 font-medium">

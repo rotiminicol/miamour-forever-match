@@ -202,7 +202,7 @@ const Discounts = () => {
           <div className="space-y-3 text-sm text-gray-600">
             <p>• Promotional codes cannot be combined with other offers unless specifically stated.</p>
             <p>• Discounts apply to the base subscription price and not to add-on services.</p>
-            <p>• MiAmour reserves the right to modify or cancel promotions at any time.</p>
+            <p>• miamour reserves the right to modify or cancel promotions at any time.</p>
             <p>• Refunds will not be provided for the difference if a promo code is applied after purchase.</p>
             <p>• Some promotions may be limited to new members only.</p>
           </div>

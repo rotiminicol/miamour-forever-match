@@ -131,7 +131,7 @@ const WeddingMatching = () => {
               Premium Matching Features
             </h2>
             <p className="text-miamour-charcoal max-w-2xl mx-auto">
-              MiAmour offers exclusive features to enhance your journey to finding love.
+              miamour offers exclusive features to enhance your journey to finding love.
             </p>
           </div>
 
@@ -210,7 +210,7 @@ const WeddingMatching = () => {
             Start Your Journey to Finding Love
           </h2>
           <p className="text-lg max-w-2xl mx-auto mb-8">
-            Join MiAmour today and connect with compatible partners who share your values and vision for the future.
+            Join miamour today and connect with compatible partners who share your values and vision for the future.
           </p>
           <Link to="/register">
             <Button className="bg-white text-miamour-pink hover:bg-miamour-blush text-lg px-8 py-6">

@@ -15,7 +15,7 @@ const Subscriptions = () => {
         <div className="mb-8">
           <h1 className="text-3xl font-serif font-bold text-miamour-burgundy mb-4">Your Subscriptions</h1>
           <p className="text-miamour-charcoal text-lg">
-            Manage your MiAmour subscription plans and services.
+            Manage your miamour subscription plans and services.
           </p>
         </div>
 

@@ -75,7 +75,7 @@ const Register = () => {
       } else if (data.user) {
         toast({
           title: "Registration successful",
-          description: "Welcome to MiAmour! Please check your email to confirm your account.",
+          description: "Welcome to miamour! Please check your email to confirm your account.",
         });
         setTimeout(() => navigate('/'), 2000);
       }

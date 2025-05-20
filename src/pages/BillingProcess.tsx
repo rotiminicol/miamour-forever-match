@@ -119,7 +119,7 @@ const BillingProcess = () => {
                       </div>
                       <div className="mt-3 ml-7">
                         <p className="text-xs text-blue-700"><span className="font-medium">Bank:</span> Providus Bank</p>
-                        <p className="text-xs text-blue-700"><span className="font-medium">Account Name:</span> MiAmour Services Ltd</p>
+                        <p className="text-xs text-blue-700"><span className="font-medium">Account Name:</span> miamour Services Ltd</p>
                         <p className="text-xs text-blue-700"><span className="font-medium">Account Number:</span> 5400881912</p>
                         <p className="text-xs text-blue-700"><span className="font-medium">Reference:</span> {user.email}</p>
                       </div>

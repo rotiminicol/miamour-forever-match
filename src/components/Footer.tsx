@@ -61,7 +61,7 @@ const Footer = () => {
               </span>
             </motion.div>
             <p className="text-gray-300 text-sm leading-relaxed">
-              Finding love, nurturing relationships. MiAmour helps you find your perfect match and build lasting connections.
+              Finding love, nurturing relationships. miamour helps you find your perfect match and build lasting connections.
             </p>
             <div className="flex space-x-4">
               {['twitter', 'facebook', 'instagram', 'linkedin'].map((social) => (
@@ -171,7 +171,7 @@ const Footer = () => {
           className="border-t border-gray-800 mt-12 pt-8 text-center sm:flex sm:justify-between sm:text-left"
         >
           <p className="text-gray-400 text-sm">
-            &copy; {new Date().getFullYear()} MiAmour. All rights reserved.
+            &copy; {new Date().getFullYear()} miamour. All rights reserved.
           </p>
           <motion.div 
             whileHover={{ scale: 1.02 }}

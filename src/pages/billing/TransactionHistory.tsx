@@ -100,7 +100,7 @@ const TransactionHistory = () => {
               <CardTitle className="text-2xl font-bold text-miamour-burgundy">${totalSpent.toFixed(2)}</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-gray-500">Lifetime spending on MiAmour services</p>
+              <p className="text-sm text-gray-500">Lifetime spending on miamour services</p>
             </CardContent>
           </Card>
           

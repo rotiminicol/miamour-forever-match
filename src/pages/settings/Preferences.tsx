@@ -48,7 +48,7 @@ const Preferences = () => {
         <div className="mb-8">
           <h1 className="text-3xl font-serif font-bold text-miamour-burgundy mb-4">Preferences</h1>
           <p className="text-miamour-charcoal text-lg">
-            Customize your MiAmour experience to suit your needs.
+            Customize your miamour experience to suit your needs.
           </p>
         </div>
         
@@ -66,7 +66,7 @@ const Preferences = () => {
                   Appearance Settings
                 </CardTitle>
                 <CardDescription>
-                  Customize how MiAmour looks and feels
+                  Customize how miamour looks and feels
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
