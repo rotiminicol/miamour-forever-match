@@ -109,4 +109,64 @@
     background-color: #FFF0F3;
     background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M54.627 0l.83.828-1.415 1.415L51.8 0h2.827zM5.373 0l-.83.828L5.96 2.243 8.2 0H5.374zM48.97 0l3.657 3.657-1.414 1.414L46.143 0h2.828zM11.03 0L7.372 3.657 8.787 5.07 13.857 0H11.03zm32.284 0L49.8 6.485 48.384 7.9l-7.9-7.9h2.83zm-24.596 0L12.43 6.485 13.846 7.9l7.9-7.9h-2.83zm16.727 0L41.23 6.485 42.64 7.9l-7.9-7.9h2.83zm-8.858 0L18.644 6.485 17.23 7.9l7.9-7.9h2.83zM0 0l.828.828L0 2.243V0h.963z' fill='%23FFCCD5' fill-opacity='0.4' fill-rule='evenodd'/%3E%3C/svg%3E");
   }
+  
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .smooth-scroll::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .smooth-scroll {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+    scroll-behavior: smooth;
+  }
+  
+  /* Glass effect for modern UI elements */
+  .glass {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  
+  /* 3D hover effect for cards */
+  .hover-3d {
+    transition: transform 0.3s ease;
+    transform-style: preserve-3d;
+  }
+  
+  .hover-3d:hover {
+    transform: translateY(-5px) scale(1.02);
+  }
+  
+  /* Sidebar animation */
+  .sidebar-slide-enter {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  
+  .sidebar-slide-enter-active {
+    transform: translateX(0);
+    opacity: 1;
+    transition: transform 0.3s ease-out, opacity 0.3s ease;
+  }
+  
+  .sidebar-slide-exit {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  
+  .sidebar-slide-exit-active {
+    transform: translateX(-100%);
+    opacity: 0;
+    transition: transform 0.3s ease-in, opacity 0.3s ease;
+  }
+  
+  /* Parallax scrolling */
+  .parallax {
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
 }

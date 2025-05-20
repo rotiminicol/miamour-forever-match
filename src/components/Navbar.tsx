@@ -1,8 +1,8 @@
 
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import { Menu, LogOut, User, ChevronDown } from "lucide-react";
+import { Menu, LogOut, ChevronDown } from "lucide-react";
 import { useAuth } from '@/contexts/AuthContext';
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -13,12 +13,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [hoveredLink, setHoveredLink] = useState<string | null>(null);
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleSignOut = async () => {
     await signOut();
@@ -32,12 +34,14 @@ const Navbar = () => {
     { path: "/pricing", label: "Pricing" },
   ];
 
+  const isLandingPage = location.pathname === '/';
+
   return (
     <motion.header 
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
-      className="bg-white/90 backdrop-blur-lg sticky top-0 z-50 border-b border-miamour-lightpink/30 shadow-sm"
+      className="bg-white/90 backdrop-blur-lg sticky top-0 z-40 border-b border-miamour-lightpink/30 shadow-sm"
     >
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
@@ -50,49 +54,51 @@ const Navbar = () => {
               transition={{ duration: 0.8 }}
             />
             <motion.span 
-              className="text-xl font-serif font-semibold text-transparent bg-clip-text bg-gradient-to-r from-miamour-pink to-miamour-pink-dark"
+              className="text-xl font-serif font-semibold text-transparent bg-clip-text bg-gradient-to-r from-miamour-pink to-miamour-burgundy"
               whileHover={{ scale: 1.05 }}
             >
               miamour.me
             </motion.span>
           </Link>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
-            {navLinks.map((link) => (
-              <motion.div
-                key={link.path}
-                onHoverStart={() => setHoveredLink(link.path)}
-                onHoverEnd={() => setHoveredLink(null)}
-                className="relative"
-              >
-                <Link 
-                  to={link.path} 
-                  className="text-miamour-charcoal hover:text-miamour-pink transition-colors flex items-center gap-1"
+          {/* Desktop Navigation - Only show on landing page */}
+          {isLandingPage && (
+            <nav className="hidden md:flex items-center space-x-8">
+              {navLinks.map((link) => (
+                <motion.div
+                  key={link.path}
+                  onHoverStart={() => setHoveredLink(link.path)}
+                  onHoverEnd={() => setHoveredLink(null)}
+                  className="relative"
                 >
-                  {link.label}
-                  {link.label === "Pricing" && (
-                    <motion.span 
-                      animate={{ y: hoveredLink === link.path ? 2 : 0 }}
-                      transition={{ type: "spring", stiffness: 500 }}
-                    >
-                      <ChevronDown className="h-4 w-4" />
-                    </motion.span>
+                  <Link 
+                    to={link.path} 
+                    className="text-miamour-charcoal hover:text-miamour-pink transition-colors flex items-center gap-1"
+                  >
+                    {link.label}
+                    {link.label === "Pricing" && (
+                      <motion.span 
+                        animate={{ y: hoveredLink === link.path ? 2 : 0 }}
+                        transition={{ type: "spring", stiffness: 500 }}
+                      >
+                        <ChevronDown className="h-4 w-4" />
+                      </motion.span>
+                    )}
+                  </Link>
+                  {hoveredLink === link.path && (
+                    <motion.div
+                      layoutId="navHoverIndicator"
+                      className="absolute bottom-0 left-0 w-full h-0.5 bg-miamour-pink"
+                      initial={{ scaleX: 0 }}
+                      animate={{ scaleX: 1 }}
+                      exit={{ scaleX: 0 }}
+                      transition={{ duration: 0.3, ease: "easeOut" }}
+                    />
                   )}
-                </Link>
-                {hoveredLink === link.path && (
-                  <motion.div
-                    layoutId="navHoverIndicator"
-                    className="absolute bottom-0 left-0 w-full h-0.5 bg-miamour-pink"
-                    initial={{ scaleX: 0 }}
-                    animate={{ scaleX: 1 }}
-                    exit={{ scaleX: 0 }}
-                    transition={{ duration: 0.3, ease: "easeOut" }}
-                  />
-                )}
-              </motion.div>
-            ))}
-          </nav>
+                </motion.div>
+              ))}
+            </nav>
+          )}
 
           {/* CTA Buttons - Desktop */}
           <div className="hidden md:flex items-center space-x-4">
@@ -109,8 +115,15 @@ const Navbar = () => {
                       whileHover={{ opacity: 1 }}
                       transition={{ duration: 0.3 }}
                     />
-                    <User className="h-4 w-4 mr-2" />
-                    <span>My Account</span>
+                    <Avatar className="h-6 w-6 mr-2">
+                      <AvatarImage src={user.user_metadata?.avatar_url} />
+                      <AvatarFallback className="bg-miamour-pink text-white text-xs">
+                        {user.email?.[0]?.toUpperCase() || "U"}
+                      </AvatarFallback>
+                    </Avatar>
+                    <span className="max-w-[100px] truncate">
+                      {user.user_metadata?.full_name || user.email?.split('@')[0]}
+                    </span>
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent 
@@ -166,7 +179,7 @@ const Navbar = () => {
                 </Link>
                 <Link to="/register">
                   <Button 
-                    className="bg-gradient-to-r from-miamour-pink to-miamour-pink-dark text-white hover:from-miamour-pink-dark hover:to-miamour-pink relative overflow-hidden shadow-lg hover:shadow-miamour-pink/20"
+                    className="bg-gradient-to-r from-miamour-pink to-miamour-burgundy text-white hover:from-miamour-burgundy hover:to-miamour-pink relative overflow-hidden shadow-lg hover:shadow-miamour-pink/20"
                   >
                     <motion.span
                       className="absolute inset-0 bg-white/10"
@@ -230,7 +243,7 @@ const Navbar = () => {
                       </Button>
                     </Link>
                     <Button
-                      className="w-full bg-gradient-to-r from-miamour-pink to-miamour-pink-dark text-white"
+                      className="w-full bg-gradient-to-r from-miamour-pink to-miamour-burgundy text-white"
                       onClick={() => {
                         handleSignOut();
                         setIsMenuOpen(false);
@@ -252,7 +265,7 @@ const Navbar = () => {
                     </Link>
                     <Link to="/register">
                       <Button 
-                        className="w-full bg-gradient-to-r from-miamour-pink to-miamour-pink-dark text-white"
+                        className="w-full bg-gradient-to-r from-miamour-pink to-miamour-burgundy text-white"
                         onClick={() => setIsMenuOpen(false)}
                       >
                         Get Started
