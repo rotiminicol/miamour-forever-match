@@ -39,18 +39,18 @@ import Counseling from "./pages/Counseling";
 import PersonalizedMatchmaking from "./pages/PersonalizedMatchmaking";
 import BillingProcess from "./pages/BillingProcess";
 
-// Create placeholder components for the remaining pages
-const CeremonyPlanning = () => <div className="py-8 px-4 max-w-7xl mx-auto"><h1 className="text-2xl font-serif font-bold text-miamour-burgundy mb-6">Ceremony Planning</h1><p>This service is coming soon. Please check back later for updates.</p></div>;
-const TherapySessions = () => <div className="py-8 px-4 max-w-7xl mx-auto"><h1 className="text-2xl font-serif font-bold text-miamour-burgundy mb-6">Therapy Sessions</h1><p>This service is coming soon. Please check back later for updates.</p></div>;
-const MarriagePlanning = () => <div className="py-8 px-4 max-w-7xl mx-auto"><h1 className="text-2xl font-serif font-bold text-miamour-burgundy mb-6">Marriage Planning</h1><p>This service is coming soon. Please check back later for updates.</p></div>;
-const Subscriptions = () => <div className="py-8 px-4 max-w-7xl mx-auto"><h1 className="text-2xl font-serif font-bold text-miamour-burgundy mb-6">Subscriptions</h1><p>This feature is coming soon. Please check back later for updates.</p></div>;
-const TransactionHistory = () => <div className="py-8 px-4 max-w-7xl mx-auto"><h1 className="text-2xl font-serif font-bold text-miamour-burgundy mb-6">Transaction History</h1><p>This feature is coming soon. Please check back later for updates.</p></div>;
-const Discounts = () => <div className="py-8 px-4 max-w-7xl mx-auto"><h1 className="text-2xl font-serif font-bold text-miamour-burgundy mb-6">Discounts</h1><p>This feature is coming soon. Please check back later for updates.</p></div>;
-const Preferences = () => <div className="py-8 px-4 max-w-7xl mx-auto"><h1 className="text-2xl font-serif font-bold text-miamour-burgundy mb-6">Preferences</h1><p>This feature is coming soon. Please check back later for updates.</p></div>;
-const Privacy = () => <div className="py-8 px-4 max-w-7xl mx-auto"><h1 className="text-2xl font-serif font-bold text-miamour-burgundy mb-6">Privacy</h1><p>This feature is coming soon. Please check back later for updates.</p></div>;
-const HelpSupport = () => <div className="py-8 px-4 max-w-7xl mx-auto"><h1 className="text-2xl font-serif font-bold text-miamour-burgundy mb-6">Help & Support</h1><p>This feature is coming soon. Please check back later for updates.</p></div>;
-const ContactUs = () => <div className="py-8 px-4 max-w-7xl mx-auto"><h1 className="text-2xl font-serif font-bold text-miamour-burgundy mb-6">Contact Us</h1><p>This feature is coming soon. Please check back later for updates.</p></div>;
-const FAQs = () => <div className="py-8 px-4 max-w-7xl mx-auto"><h1 className="text-2xl font-serif font-bold text-miamour-burgundy mb-6">FAQs</h1><p>This feature is coming soon. Please check back later for updates.</p></div>;
+// Import the pages we created
+import CeremonyPlanning from "./pages/services/CeremonyPlanning";
+import TherapySessions from "./pages/services/TherapySessions";
+import MarriagePlanning from "./pages/services/MarriagePlanning";
+import Subscriptions from "./pages/billing/Subscriptions";
+import TransactionHistory from "./pages/billing/TransactionHistory";
+import Discounts from "./pages/billing/Discounts";
+import Preferences from "./pages/settings/Preferences";
+import Privacy from "./pages/settings/Privacy";
+import HelpSupport from "./pages/support/HelpSupport";
+import ContactUs from "./pages/support/ContactUs";
+import FAQs from "./pages/support/FAQs";
 
 // Create a layout component to conditionally render the footer and navbar based on auth state
 const AppLayout = () => {
@@ -133,25 +133,34 @@ const AppLayout = () => {
               <Route path="/appointments" element={<Appointments />} />
               <Route path="/notifications" element={<Notifications />} />
               <Route path="/counseling" element={<Counseling />} />
+              
+              {/* Service pages */}
               <Route path="/ceremony-planning" element={<CeremonyPlanning />} />
               <Route path="/therapy-sessions" element={<TherapySessions />} />
               <Route path="/marriage-planning" element={<MarriagePlanning />} />
               <Route path="/personalized-matchmaking" element={<PersonalizedMatchmaking />} />
+              
+              {/* Billing pages */}
               <Route path="/billing-process" element={<BillingProcess />} />
               <Route path="/subscriptions" element={<Subscriptions />} />
               <Route path="/transaction-history" element={<TransactionHistory />} />
               <Route path="/discounts" element={<Discounts />} />
+              
+              {/* Settings pages */}
               <Route path="/preferences" element={<Preferences />} />
               <Route path="/privacy" element={<Privacy />} />
+              
+              {/* Support pages */}
               <Route path="/help-support" element={<HelpSupport />} />
               <Route path="/contact-us" element={<ContactUs />} />
               <Route path="/faqs" element={<FAQs />} />
+              
               <Route path="*" element={<NotFound />} />
             </Routes>
           </main>
         </div>
         
-        {showFooter && <Footer />}
+        {showFooter &&  <Footer />}
       </div>
     </>
   );

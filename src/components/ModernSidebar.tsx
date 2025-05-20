@@ -2,21 +2,24 @@
 import { useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { Heart, Users, Calendar, MessageSquare, User, Settings, Bell, CreditCard, 
-         HelpCircle, LogOut, Search, ChevronRight, Home } from 'lucide-react';
+         HelpCircle, LogOut, Search, ChevronRight, Home, HelpCircleIcon, X } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { motion } from 'framer-motion';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 const ModernSidebar = () => {
   const { signOut, user } = useAuth();
   const [isExpanded, setIsExpanded] = useState(true);
   const location = useLocation();
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [showSearch, setShowSearch] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
       const mobile = window.innerWidth < 768;
       setIsMobile(mobile);
       if (mobile) setIsExpanded(false);
+      else setIsExpanded(true); // Default to expanded on desktop
     };
 
     window.addEventListener('resize', handleResize);
@@ -43,7 +46,7 @@ const ModernSidebar = () => {
   const serviceItems = [
     { path: '/personalized-matchmaking', label: 'Matchmaking', icon: Users },
     { path: '/counseling', label: 'Counseling', icon: Heart },
-    { path: '/therapy-sessions', label: 'Therapy Sessions', icon: Heart },
+    { path: '/therapy-sessions', label: 'Therapy Sessions', icon: HelpCircleIcon },
     { path: '/ceremony-planning', label: 'Ceremony Planning', icon: Calendar },
     { path: '/marriage-planning', label: 'Marriage Planning', icon: Calendar },
   ];
@@ -68,30 +71,39 @@ const ModernSidebar = () => {
   ];
 
   const renderNavLink = (item) => (
-    <NavLink
-      key={item.path}
-      to={item.path}
-      className={({ isActive }) => 
-        `flex items-center gap-2 px-4 py-3 rounded-lg transition-all ${
-          isActive 
-            ? 'bg-gradient-to-r from-miamour-pink to-miamour-burgundy text-white' 
-            : 'hover:bg-miamour-blush/20 text-gray-700'
-        } ${!isExpanded ? 'justify-center' : ''}`
-      }
-      title={!isExpanded ? item.label : ""}
-    >
-      <item.icon size={20} />
-      {isExpanded && <span className="whitespace-nowrap overflow-hidden text-ellipsis">{item.label}</span>}
-    </NavLink>
+    <TooltipProvider key={item.path} delayDuration={!isExpanded ? 100 : 1000}>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <NavLink
+            to={item.path}
+            className={({ isActive }) => 
+              `flex items-center gap-2 px-4 py-3 rounded-lg transition-all ${
+                isActive 
+                  ? 'bg-gradient-to-r from-miamour-pink to-miamour-burgundy text-white' 
+                  : 'hover:bg-miamour-blush/20 text-gray-700'
+              } ${!isExpanded ? 'justify-center' : ''}`
+            }
+          >
+            <item.icon size={!isExpanded ? 20 : 18} />
+            {isExpanded && <span className="whitespace-nowrap overflow-hidden text-ellipsis">{item.label}</span>}
+          </NavLink>
+        </TooltipTrigger>
+        {!isExpanded && <TooltipContent side="right">{item.label}</TooltipContent>}
+      </Tooltip>
+    </TooltipProvider>
   );
 
   const handleLogout = () => {
     signOut();
   };
 
+  const toggleSearch = () => {
+    setShowSearch(!showSearch);
+  };
+
   // Sidebar variants for animation
   const sidebarVariants = {
-    expanded: { width: '240px' },
+    expanded: { width: '260px' },
     collapsed: { width: '72px' }
   };
 
@@ -110,51 +122,73 @@ const ModernSidebar = () => {
         initial={false}
         animate={isExpanded ? 'expanded' : 'collapsed'}
         variants={sidebarVariants}
-        transition={{ duration: 0.2 }}
-        className={`fixed md:sticky top-0 left-0 h-screen bg-white border-r border-gray-100 z-30 overflow-hidden ${
+        transition={{ duration: 0.2, ease: "easeInOut" }}
+        className={`fixed md:sticky top-0 left-0 h-screen bg-white border-r border-gray-100 z-30 overflow-hidden custom-scrollbar shadow-sm ${
           isMobile && !isExpanded ? 'w-0' : ''
         }`}
       >
         <div className="flex flex-col h-full">
-          {/* Toggle button */}
+          {/* Toggle button for desktop */}
           <button
             onClick={() => setIsExpanded(!isExpanded)}
-            className={`absolute top-4 right-2 p-1 rounded-full hover:bg-gray-100 ${
+            className={`absolute top-4 right-2 p-1.5 rounded-full hover:bg-gray-100 ${
               isMobile ? 'hidden' : 'block'
             } z-10`}
+            aria-label={isExpanded ? "Collapse sidebar" : "Expand sidebar"}
           >
             <ChevronRight
-              size={18}
+              size={16}
               className={`transition-transform ${isExpanded ? 'rotate-180' : ''}`}
             />
           </button>
 
           {/* Logo */}
-          <div className={`p-4 flex items-center ${isExpanded ? 'justify-start' : 'justify-center'} border-b border-gray-100`}>
-            <img
-              src="/lovable-uploads/miLogo2.png"
-              alt="MiAmour Logo"
-              className="h-10 w-10"
-            />
-            {isExpanded && <span className="ml-2 font-serif text-lg font-medium">MiAmour</span>}
+          <div className={`p-4 ${isExpanded ? 'justify-start' : 'justify-center'} flex items-center border-b border-gray-100`}>
+            {isExpanded ? (
+              <div className="flex items-center">
+                <img
+                  src="/lovable-uploads/miLogo2.png"
+                  alt="MiAmour Logo"
+                  className="h-10 w-10"
+                />
+                <span className="ml-2 font-serif text-lg font-medium">MiAmour</span>
+              </div>
+            ) : (
+              <img
+                src="/lovable-uploads/miLogo2.png"
+                alt="MiAmour Logo"
+                className="h-8 w-8"
+              />
+            )}
           </div>
 
-          {/* Mobile sidebar toggle */}
-          {isMobile && (
+          {/* Mobile close button */}
+          {isMobile && isExpanded && (
             <button
-              onClick={() => setIsExpanded(!isExpanded)}
-              className="absolute top-4 right-3 md:hidden p-2 rounded-full hover:bg-miamour-blush/10"
+              onClick={() => setIsExpanded(false)}
+              className="absolute top-4 right-3 p-2 text-gray-500 hover:text-gray-700"
+              aria-label="Close sidebar"
             >
-              <ChevronRight
-                size={20}
-                className={`transition-transform ${isExpanded ? 'rotate-180' : ''}`}
-              />
+              <X size={20} />
             </button>
           )}
 
-          {/* Search */}
-          {isExpanded && (
-            <div className="px-4 my-2">
+          {/* Search toggle for collapsed state */}
+          {!isExpanded && (
+            <div className="px-2 py-3">
+              <button
+                onClick={toggleSearch}
+                className="w-full flex justify-center p-2 rounded-lg hover:bg-miamour-blush/20 text-gray-500"
+                aria-label="Search"
+              >
+                <Search className="h-5 w-5" />
+              </button>
+            </div>
+          )}
+
+          {/* Search expanded */}
+          {(isExpanded || showSearch) && (
+            <div className={`px-4 my-2 ${!isExpanded && showSearch ? 'absolute top-16 left-16 z-50 bg-white shadow-lg rounded-lg p-4 min-w-64' : ''}`}>
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                 <input
@@ -162,6 +196,14 @@ const ModernSidebar = () => {
                   placeholder="Search..."
                   className="w-full pl-10 pr-4 py-2 text-sm rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-miamour-pink/30 focus:border-miamour-pink"
                 />
+                {!isExpanded && showSearch && (
+                  <button 
+                    onClick={() => setShowSearch(false)} 
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500"
+                  >
+                    <X size={16} />
+                  </button>
+                )}
               </div>
             </div>
           )}
@@ -170,36 +212,40 @@ const ModernSidebar = () => {
           <div className="flex-1 overflow-y-auto custom-scrollbar">
             <nav className="px-2 py-2">
               <div className="mb-2">
-                {isExpanded && <p className="px-4 text-xs font-semibold text-gray-500 uppercase">Main Menu</p>}
-                <div className="space-y-1 mt-2">
+                {isExpanded && <p className="px-4 text-xs font-semibold text-gray-500 uppercase mt-2 mb-1">Main Menu</p>}
+                <div className="space-y-1">
                   {menuItems.map(renderNavLink)}
                 </div>
               </div>
 
               <div className="mb-2 mt-4">
-                {isExpanded && <p className="px-4 text-xs font-semibold text-gray-500 uppercase">Services</p>}
-                <div className="space-y-1 mt-2">
+                {isExpanded && <p className="px-4 text-xs font-semibold text-gray-500 uppercase mt-2 mb-1">Services</p>}
+                {!isExpanded && <div className="h-px bg-gray-100 my-3 mx-2"></div>}
+                <div className="space-y-1">
                   {serviceItems.map(renderNavLink)}
                 </div>
               </div>
 
               <div className="mb-2 mt-4">
-                {isExpanded && <p className="px-4 text-xs font-semibold text-gray-500 uppercase">Billing</p>}
-                <div className="space-y-1 mt-2">
+                {isExpanded && <p className="px-4 text-xs font-semibold text-gray-500 uppercase mt-2 mb-1">Billing</p>}
+                {!isExpanded && <div className="h-px bg-gray-100 my-3 mx-2"></div>}
+                <div className="space-y-1">
                   {billingItems.map(renderNavLink)}
                 </div>
               </div>
 
               <div className="mb-2 mt-4">
-                {isExpanded && <p className="px-4 text-xs font-semibold text-gray-500 uppercase">Settings</p>}
-                <div className="space-y-1 mt-2">
+                {isExpanded && <p className="px-4 text-xs font-semibold text-gray-500 uppercase mt-2 mb-1">Settings</p>}
+                {!isExpanded && <div className="h-px bg-gray-100 my-3 mx-2"></div>}
+                <div className="space-y-1">
                   {settingsItems.map(renderNavLink)}
                 </div>
               </div>
 
               <div className="mb-2 mt-4">
-                {isExpanded && <p className="px-4 text-xs font-semibold text-gray-500 uppercase">Support</p>}
-                <div className="space-y-1 mt-2">
+                {isExpanded && <p className="px-4 text-xs font-semibold text-gray-500 uppercase mt-2 mb-1">Support</p>}
+                {!isExpanded && <div className="h-px bg-gray-100 my-3 mx-2"></div>}
+                <div className="space-y-1">
                   {supportItems.map(renderNavLink)}
                 </div>
               </div>
@@ -218,16 +264,23 @@ const ModernSidebar = () => {
                 </div>
               </div>
             )}
-            <button
-              onClick={handleLogout}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-gray-700 hover:bg-miamour-blush/20 w-full ${
-                !isExpanded ? 'justify-center' : ''
-              }`}
-              title={!isExpanded ? "Log out" : ""}
-            >
-              <LogOut size={20} />
-              {isExpanded && <span>Log out</span>}
-            </button>
+            
+            <TooltipProvider delayDuration={!isExpanded ? 100 : 1000}>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button
+                    onClick={handleLogout}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-lg text-gray-700 hover:bg-miamour-blush/20 w-full ${
+                      !isExpanded ? 'justify-center' : ''
+                    }`}
+                  >
+                    <LogOut size={isExpanded ? 18 : 20} />
+                    {isExpanded && <span>Log out</span>}
+                  </button>
+                </TooltipTrigger>
+                {!isExpanded && <TooltipContent side="right">Log out</TooltipContent>}
+              </Tooltip>
+            </TooltipProvider>
           </div>
         </div>
       </motion.aside>
@@ -237,6 +290,7 @@ const ModernSidebar = () => {
         <button
           onClick={() => setIsExpanded(true)}
           className="fixed top-4 left-4 z-30 p-2 bg-miamour-pink rounded-full shadow-lg text-white"
+          aria-label="Open menu"
         >
           <ChevronRight size={20} />
         </button>
