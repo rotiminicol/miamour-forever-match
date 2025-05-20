@@ -35,23 +35,22 @@ import CloudinaryProvider from "./contexts/CloudinaryContext";
 import CookieConsent from "./components/CookieConsent";
 import Loader from "./components/Loader";
 import { useState, useEffect } from "react";
+import Counseling from "./pages/Counseling";
+import PersonalizedMatchmaking from "./pages/PersonalizedMatchmaking";
+import BillingProcess from "./pages/BillingProcess";
 
-// Create placeholder components for the missing pages
-// These will be replaced by the actual components once they are created
-const Counseling = () => <div className="p-8"><h1 className="text-2xl">Counseling</h1><p>This page is under construction</p></div>;
-const CeremonyPlanning = () => <div className="p-8"><h1 className="text-2xl">Ceremony Planning</h1><p>This page is under construction</p></div>;
-const TherapySessions = () => <div className="p-8"><h1 className="text-2xl">Therapy Sessions</h1><p>This page is under construction</p></div>;
-const MarriagePlanning = () => <div className="p-8"><h1 className="text-2xl">Marriage Planning</h1><p>This page is under construction</p></div>;
-const PersonalizedMatchmaking = () => <div className="p-8"><h1 className="text-2xl">Personalized Matchmaking</h1><p>This page is under construction</p></div>;
-const BillingProcess = () => <div className="p-8"><h1 className="text-2xl">Payment Methods</h1><p>This page is under construction</p></div>;
-const Subscriptions = () => <div className="p-8"><h1 className="text-2xl">Subscriptions</h1><p>This page is under construction</p></div>;
-const TransactionHistory = () => <div className="p-8"><h1 className="text-2xl">Transaction History</h1><p>This page is under construction</p></div>;
-const Discounts = () => <div className="p-8"><h1 className="text-2xl">Discounts</h1><p>This page is under construction</p></div>;
-const Preferences = () => <div className="p-8"><h1 className="text-2xl">Preferences</h1><p>This page is under construction</p></div>;
-const Privacy = () => <div className="p-8"><h1 className="text-2xl">Privacy</h1><p>This page is under construction</p></div>;
-const HelpSupport = () => <div className="p-8"><h1 className="text-2xl">Help & Support</h1><p>This page is under construction</p></div>;
-const ContactUs = () => <div className="p-8"><h1 className="text-2xl">Contact Us</h1><p>This page is under construction</p></div>;
-const FAQs = () => <div className="p-8"><h1 className="text-2xl">FAQs</h1><p>This page is under construction</p></div>;
+// Create placeholder components for the remaining pages
+const CeremonyPlanning = () => <div className="py-8 px-4 max-w-7xl mx-auto"><h1 className="text-2xl font-serif font-bold text-miamour-burgundy mb-6">Ceremony Planning</h1><p>This service is coming soon. Please check back later for updates.</p></div>;
+const TherapySessions = () => <div className="py-8 px-4 max-w-7xl mx-auto"><h1 className="text-2xl font-serif font-bold text-miamour-burgundy mb-6">Therapy Sessions</h1><p>This service is coming soon. Please check back later for updates.</p></div>;
+const MarriagePlanning = () => <div className="py-8 px-4 max-w-7xl mx-auto"><h1 className="text-2xl font-serif font-bold text-miamour-burgundy mb-6">Marriage Planning</h1><p>This service is coming soon. Please check back later for updates.</p></div>;
+const Subscriptions = () => <div className="py-8 px-4 max-w-7xl mx-auto"><h1 className="text-2xl font-serif font-bold text-miamour-burgundy mb-6">Subscriptions</h1><p>This feature is coming soon. Please check back later for updates.</p></div>;
+const TransactionHistory = () => <div className="py-8 px-4 max-w-7xl mx-auto"><h1 className="text-2xl font-serif font-bold text-miamour-burgundy mb-6">Transaction History</h1><p>This feature is coming soon. Please check back later for updates.</p></div>;
+const Discounts = () => <div className="py-8 px-4 max-w-7xl mx-auto"><h1 className="text-2xl font-serif font-bold text-miamour-burgundy mb-6">Discounts</h1><p>This feature is coming soon. Please check back later for updates.</p></div>;
+const Preferences = () => <div className="py-8 px-4 max-w-7xl mx-auto"><h1 className="text-2xl font-serif font-bold text-miamour-burgundy mb-6">Preferences</h1><p>This feature is coming soon. Please check back later for updates.</p></div>;
+const Privacy = () => <div className="py-8 px-4 max-w-7xl mx-auto"><h1 className="text-2xl font-serif font-bold text-miamour-burgundy mb-6">Privacy</h1><p>This feature is coming soon. Please check back later for updates.</p></div>;
+const HelpSupport = () => <div className="py-8 px-4 max-w-7xl mx-auto"><h1 className="text-2xl font-serif font-bold text-miamour-burgundy mb-6">Help & Support</h1><p>This feature is coming soon. Please check back later for updates.</p></div>;
+const ContactUs = () => <div className="py-8 px-4 max-w-7xl mx-auto"><h1 className="text-2xl font-serif font-bold text-miamour-burgundy mb-6">Contact Us</h1><p>This feature is coming soon. Please check back later for updates.</p></div>;
+const FAQs = () => <div className="py-8 px-4 max-w-7xl mx-auto"><h1 className="text-2xl font-serif font-bold text-miamour-burgundy mb-6">FAQs</h1><p>This feature is coming soon. Please check back later for updates.</p></div>;
 
 // Create a layout component to conditionally render the footer and navbar based on auth state
 const AppLayout = () => {
@@ -63,7 +62,7 @@ const AppLayout = () => {
     // Simulate page loading
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 1500);
+    }, 800);
     
     return () => clearTimeout(timer);
   }, []);
@@ -116,7 +115,7 @@ const AppLayout = () => {
         <div className="flex flex-grow w-full">
           {showSidebar && <ModernSidebar />}
           
-          <main className={`flex-grow w-full ${showSidebar ? 'md:ml-0' : ''} smooth-scroll`}>
+          <main className={`flex-grow w-full ${showSidebar ? 'md:ml-0' : ''} custom-scrollbar overflow-y-auto`}>
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/wedding-matching" element={<WeddingMatching />} />
