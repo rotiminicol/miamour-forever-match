@@ -7,86 +7,13 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import { useNotifications } from "@/contexts/NotificationsContext";
 import { useAuth } from "@/contexts/AuthContext";
-import { Send, Search, Phone, Video, MoreHorizontal, Image, Smile, Paperclip } from "lucide-react";
-
-// Sample data - in a real app this would come from an API
-const SAMPLE_CONVERSATIONS = [
-  {
-    id: "1",
-    name: "Sarah Johnson",
-    avatar: "https://randomuser.me/api/portraits/women/44.jpg",
-    lastMessage: "Looking forward to our date!",
-    time: "2m ago",
-    unread: 2,
-    online: true
-  },
-  {
-    id: "2",
-    name: "Michael Chen",
-    avatar: "https://randomuser.me/api/portraits/men/32.jpg",
-    lastMessage: "Thanks for the match recommendation",
-    time: "1h ago",
-    unread: 0,
-    online: true
-  },
-  {
-    id: "3",
-    name: "Jessica Smith",
-    avatar: "https://randomuser.me/api/portraits/women/50.jpg",
-    lastMessage: "Do you have time to chat tomorrow?",
-    time: "2h ago",
-    unread: 0,
-    online: false
-  },
-  {
-    id: "4",
-    name: "David Wilson",
-    avatar: "https://randomuser.me/api/portraits/men/86.jpg",
-    lastMessage: "I enjoyed our conversation yesterday",
-    time: "1d ago",
-    unread: 0,
-    online: false
-  }
-];
-
-// Sample messages for a conversation
-const SAMPLE_MESSAGES = [
-  {
-    id: "1",
-    senderId: "other",
-    content: "Hi there! I saw we were matched. I'm excited to get to know you better!",
-    timestamp: "10:30 AM"
-  },
-  {
-    id: "2",
-    senderId: "me",
-    content: "Hello! Yes, I'm excited too. I noticed we both enjoy hiking. What's your favorite trail?",
-    timestamp: "10:32 AM"
-  },
-  {
-    id: "3",
-    senderId: "other",
-    content: "I love the Mountain Ridge Trail! Have you been there? The views are absolutely stunning, especially at sunrise.",
-    timestamp: "10:35 AM"
-  },
-  {
-    id: "4",
-    senderId: "me",
-    content: "I haven't been there yet, but it's on my list! I usually hike at Riverside Park. Maybe we could go together sometime?",
-    timestamp: "10:38 AM"
-  },
-  {
-    id: "5",
-    senderId: "other",
-    content: "That would be wonderful! I'd love to explore a new trail. Are you free this weekend?",
-    timestamp: "10:40 AM"
-  }
-];
+import { Send, Search, Phone, Video, MoreHorizontal, Image, Smile, Paperclip, MessageSquare } from "lucide-react";
+import { Card } from "@/components/ui/card";
 
 const Messages = () => {
-  const [activeConversation, setActiveConversation] = useState<string | null>("1"); // Default to first conversation
-  const [conversations, setConversations] = useState(SAMPLE_CONVERSATIONS);
-  const [messages, setMessages] = useState(SAMPLE_MESSAGES);
+  const [activeConversation, setActiveConversation] = useState(null);
+  const [conversations, setConversations] = useState([]);
+  const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const { toast } = useToast();
@@ -98,58 +25,17 @@ const Messages = () => {
     conv => conv.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
   
-  // Get active conversation details
-  const activeConversationDetails = conversations.find(conv => conv.id === activeConversation);
-  
-  // Handle sending a new message
   const handleSendMessage = () => {
     if (!newMessage.trim()) return;
     
-    const newMessageObj = {
-      id: Date.now().toString(),
-      senderId: "me",
-      content: newMessage,
-      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-    };
+    // This would be replaced with actual API call to send message
+    toast({
+      title: "Feature in development",
+      description: "Message sending will be available soon.",
+    });
     
-    setMessages([...messages, newMessageObj]);
     setNewMessage("");
-    
-    // Simulate response after delay (only in the first conversation)
-    if (activeConversation === "1") {
-      setTimeout(() => {
-        const responseMessage = {
-          id: (Date.now() + 1).toString(),
-          senderId: "other",
-          content: "Thanks for your message! I'll get back to you soon.",
-          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-        };
-        
-        setMessages(prev => [...prev, responseMessage]);
-        
-        // Show notification
-        addNotification({
-          title: "New Message",
-          message: `${activeConversationDetails?.name}: Thanks for your message! I'll get back to you soon.`,
-          type: "info"
-        });
-        
-      }, 3000);
-    }
   };
-  
-  // Mark conversation as read when selected
-  useEffect(() => {
-    if (activeConversation) {
-      setConversations(prev => 
-        prev.map(conv => 
-          conv.id === activeConversation 
-            ? { ...conv, unread: 0 } 
-            : conv
-        )
-      );
-    }
-  }, [activeConversation]);
   
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
@@ -170,9 +56,9 @@ const Messages = () => {
             </div>
           </div>
           
-          <div className="flex-grow overflow-y-auto">
-            {filteredConversations.length > 0 ? (
-              filteredConversations.map(conversation => (
+          {filteredConversations.length > 0 ? (
+            <div className="flex-grow overflow-y-auto">
+              {filteredConversations.map((conversation) => (
                 <motion.div
                   key={conversation.id}
                   whileHover={{ backgroundColor: "rgba(249, 168, 212, 0.05)" }}
@@ -212,13 +98,27 @@ const Messages = () => {
                     </div>
                   </div>
                 </motion.div>
-              ))
-            ) : (
-              <div className="p-4 text-center text-gray-500">
-                No conversations match your search
+              ))}
+            </div>
+          ) : (
+            <div className="flex-grow flex items-center justify-center p-6">
+              <div className="text-center">
+                <MessageSquare className="h-12 w-12 text-gray-300 mx-auto mb-3" />
+                <p className="text-gray-500 font-medium">No conversations</p>
+                <p className="text-sm text-gray-400 mt-1 mb-4">
+                  Start connecting with your matches
+                </p>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="border-miamour-burgundy text-miamour-burgundy hover:bg-miamour-burgundy/10"
+                  onClick={() => navigate('/matches')}
+                >
+                  Find Matches
+                </Button>
               </div>
-            )}
-          </div>
+            </div>
+          )}
         </div>
         
         {/* Chat area */}
@@ -336,29 +236,41 @@ const Messages = () => {
           </div>
         ) : (
           <div className="hidden md:flex flex-col justify-center items-center flex-grow bg-gray-50">
-            <div className="text-center p-8">
+            <Card className="text-center p-8 max-w-md">
               <div className="mb-4 bg-pink-100 h-16 w-16 rounded-full flex items-center justify-center mx-auto">
-                <Send className="h-8 w-8 text-pink-500" />
+                <MessageSquare className="h-8 w-8 text-pink-500" />
               </div>
               <h2 className="text-2xl font-medium mb-2">Your Messages</h2>
-              <p className="text-gray-500 max-w-sm">
-                Select a conversation to start chatting or connect with a new match.
+              <p className="text-gray-500 max-w-sm mb-6">
+                Connect with matches to start conversations. Your messages will appear here.
               </p>
-            </div>
+              <Button
+                onClick={() => navigate('/matches')}
+                className="bg-gradient-to-r from-miamour-pink to-miamour-burgundy hover:from-miamour-burgundy hover:to-miamour-pink text-white"
+              >
+                Find Matches
+              </Button>
+            </Card>
           </div>
         )}
         
         {/* Mobile empty state - show when no conversation is selected */}
         <div className="md:hidden flex flex-col justify-center items-center flex-grow bg-gray-50">
-          <div className="text-center p-8">
+          <Card className="text-center p-8">
             <div className="mb-4 bg-pink-100 h-16 w-16 rounded-full flex items-center justify-center mx-auto">
-              <Send className="h-8 w-8 text-pink-500" />
+              <MessageSquare className="h-8 w-8 text-pink-500" />
             </div>
             <h2 className="text-2xl font-medium mb-2">Your Messages</h2>
-            <p className="text-gray-500">
-              Select a conversation to start chatting.
+            <p className="text-gray-500 mb-6">
+              Connect with matches to start conversations.
             </p>
-          </div>
+            <Button
+              onClick={() => navigate('/matches')}
+              className="bg-gradient-to-r from-miamour-pink to-miamour-burgundy hover:from-miamour-burgundy hover:to-miamour-pink text-white"
+            >
+              Find Matches
+            </Button>
+          </Card>
         </div>
       </div>
     </div>

@@ -35,6 +35,20 @@ import CloudinaryProvider from "./contexts/CloudinaryContext";
 import CookieConsent from "./components/CookieConsent";
 import Loader from "./components/Loader";
 import { useState, useEffect } from "react";
+import Counseling from "./pages/Counseling";
+import CeremonyPlanning from "./pages/CeremonyPlanning";
+import TherapySessions from "./pages/TherapySessions";
+import MarriagePlanning from "./pages/MarriagePlanning";
+import PersonalizedMatchmaking from "./pages/PersonalizedMatchmaking";
+import BillingProcess from "./pages/BillingProcess";
+import Subscriptions from "./pages/Subscriptions";
+import TransactionHistory from "./pages/TransactionHistory";
+import Discounts from "./pages/Discounts";
+import Preferences from "./pages/Preferences";
+import Privacy from "./pages/Privacy";
+import HelpSupport from "./pages/HelpSupport";
+import ContactUs from "./pages/ContactUs";
+import FAQs from "./pages/FAQs";
 
 // Create a layout component to conditionally render the footer and navbar based on auth state
 const AppLayout = () => {
@@ -116,6 +130,20 @@ const AppLayout = () => {
               <Route path="/messages" element={<Messages />} />
               <Route path="/appointments" element={<Appointments />} />
               <Route path="/notifications" element={<Notifications />} />
+              <Route path="/counseling" element={<Counseling />} />
+              <Route path="/ceremony-planning" element={<CeremonyPlanning />} />
+              <Route path="/therapy-sessions" element={<TherapySessions />} />
+              <Route path="/marriage-planning" element={<MarriagePlanning />} />
+              <Route path="/personalized-matchmaking" element={<PersonalizedMatchmaking />} />
+              <Route path="/billing-process" element={<BillingProcess />} />
+              <Route path="/subscriptions" element={<Subscriptions />} />
+              <Route path="/transaction-history" element={<TransactionHistory />} />
+              <Route path="/discounts" element={<Discounts />} />
+              <Route path="/preferences" element={<Preferences />} />
+              <Route path="/privacy" element={<Privacy />} />
+              <Route path="/help-support" element={<HelpSupport />} />
+              <Route path="/contact-us" element={<ContactUs />} />
+              <Route path="/faqs" element={<FAQs />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </main>

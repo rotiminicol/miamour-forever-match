@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
-import { Heart, Calendar, MessageSquare, X, User } from "lucide-react";
+import { Heart, Calendar, MessageSquare, X, User, PlusCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const MatchingDashboard = () => {
@@ -50,34 +50,10 @@ const MatchingDashboard = () => {
 
         setProfile(profileData);
 
-        // For demo purposes, we'll just fetch some random profiles as potential matches
-        // In a real app, you would use the user's preferences to find suitable matches
-        const { data: matchesData, error: matchesError } = await supabase
-          .from("user_profiles")
-          .select("*")
-          .neq("id", user.id)
-          .limit(5);
-
-        if (matchesError) {
-          throw matchesError;
-        }
-
-        // Add some demo interests to the matches
-        const interestsList = [
-          ["Reading", "Travel", "Photography"],
-          ["Cooking", "Hiking", "Movies"],
-          ["Music", "Art", "Dancing"],
-          ["Sports", "Yoga", "Meditation"],
-          ["Technology", "Science", "Gaming"],
-        ];
-
-        const enhancedMatches = matchesData.map((match, index) => ({
-          ...match,
-          compatibility: Math.floor(Math.random() * 30) + 70, // Random compatibility 70-99%
-          interests: interestsList[index % interestsList.length],
-        }));
-
-        setPotentialMatches(enhancedMatches);
+        // In a real app, we would fetch potential matches based on preferences
+        // For now, we'll just show an empty state
+        setPotentialMatches([]);
+        
       } catch (error) {
         console.error("Error fetching data:", error);
         toast({
@@ -94,25 +70,17 @@ const MatchingDashboard = () => {
   }, [user, navigate, toast]);
 
   const handleLike = (matchId: string) => {
-    // In a real app, this would create a match in the database
     toast({
-      title: "Match Liked",
-      description: "You've expressed interest in this match!",
+      title: "Feature in development",
+      description: "The matching system is being implemented.",
     });
-
-    // Remove from potential matches
-    setPotentialMatches(potentialMatches.filter(match => match.id !== matchId));
   };
 
   const handleSkip = (matchId: string) => {
-    // In a real app, this would mark the profile as skipped
     toast({
-      title: "Match Skipped",
-      description: "This profile has been skipped.",
+      title: "Feature in development",
+      description: "The matching system is being implemented.",
     });
-
-    // Remove from potential matches
-    setPotentialMatches(potentialMatches.filter(match => match.id !== matchId));
   };
 
   if (isLoading) {
@@ -140,19 +108,19 @@ const MatchingDashboard = () => {
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <span>Matches Viewed</span>
-                  <Badge variant="outline">12</Badge>
+                  <Badge variant="outline">0</Badge>
                 </div>
                 <div className="flex items-center justify-between">
                   <span>Mutual Matches</span>
-                  <Badge variant="outline">3</Badge>
+                  <Badge variant="outline">0</Badge>
                 </div>
                 <div className="flex items-center justify-between">
                   <span>Active Conversations</span>
-                  <Badge variant="outline">2</Badge>
+                  <Badge variant="outline">0</Badge>
                 </div>
                 <div className="flex items-center justify-between">
                   <span>Upcoming Dates</span>
-                  <Badge variant="outline">1</Badge>
+                  <Badge variant="outline">0</Badge>
                 </div>
               </div>
             </CardContent>
@@ -171,39 +139,28 @@ const MatchingDashboard = () => {
             <CardHeader>
               <CardTitle className="text-xl flex items-center">
                 <Calendar className="mr-2 h-5 w-5 text-miamour-gold" />
-                Upcoming Events
+                Events
               </CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="border-l-2 border-miamour-burgundy pl-4 py-1">
-                  <p className="font-medium">Virtual Dating Workshop</p>
-                  <p className="text-sm text-muted-foreground">May 25, 2025 • 7:00 PM</p>
-                </div>
-                <div className="border-l-2 border-miamour-blush pl-4 py-1">
-                  <p className="font-medium">Singles Mixer</p>
-                  <p className="text-sm text-muted-foreground">June 5, 2025 • 6:30 PM</p>
-                </div>
-              </div>
-            </CardContent>
-            <CardFooter>
+            <CardContent className="text-center py-6">
+              <Calendar className="h-12 w-12 text-miamour-blush opacity-50 mx-auto mb-3" />
+              <p className="text-gray-500 mb-4">No upcoming events</p>
               <Button 
                 variant="outline" 
                 className="w-full"
                 onClick={() => toast({ title: "Coming soon", description: "Event registration will be available soon." })}
               >
-                View All Events
+                Browse Events
               </Button>
-            </CardFooter>
+            </CardContent>
           </Card>
         </div>
 
         <div className="md:col-span-2">
           <div className="bg-white p-6 rounded-lg shadow border border-miamour-blush/50 mb-6">
-            <h2 className="text-2xl font-serif font-medium text-miamour-burgundy mb-4">Today's Top Matches</h2>
+            <h2 className="text-2xl font-serif font-medium text-miamour-burgundy mb-4">Today's Potential Matches</h2>
             <p className="text-miamour-charcoal mb-4">
-              Based on your preferences, we've selected the following matches for you.
-              Take your time to review each profile and let us know if you're interested.
+              Complete your profile and preferences to receive personalized matches.
             </p>
           </div>
 
@@ -275,73 +232,47 @@ const MatchingDashboard = () => {
             <Card>
               <CardContent className="py-12 text-center">
                 <Heart className="h-12 w-12 text-miamour-blush mx-auto mb-4" />
-                <h3 className="text-xl font-serif font-medium text-miamour-burgundy mb-2">No More Matches Today</h3>
+                <h3 className="text-xl font-serif font-medium text-miamour-burgundy mb-2">No Matches Available Yet</h3>
                 <p className="text-miamour-charcoal mb-6 max-w-md mx-auto">
-                  You've gone through all your potential matches for today. Check back tomorrow for new matches!
+                  To get started with matching, please complete your profile and preferences.
                 </p>
-                <Button 
-                  variant="outline" 
-                  className="mx-auto"
-                  onClick={() => navigate("/match-preferences")}
-                >
-                  Update Preferences
-                </Button>
+                <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                  <Button 
+                    className="bg-miamour-burgundy text-white"
+                    onClick={() => navigate("/profile-setup")}
+                  >
+                    <PlusCircle className="mr-2 h-4 w-4" />
+                    Complete Profile
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    className="border-miamour-burgundy text-miamour-burgundy"
+                    onClick={() => navigate("/match-preferences")}
+                  >
+                    Set Match Preferences
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           )}
 
           <div className="mt-8">
             <h2 className="text-2xl font-serif font-medium text-miamour-burgundy mb-4">Active Connections</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Card>
-                <CardHeader className="pb-2">
-                  <div className="flex justify-between">
-                    <CardTitle>Emma J.</CardTitle>
-                    <Badge className="bg-miamour-burgundy">New Message</Badge>
-                  </div>
-                  <CardDescription>Last message: 2 hours ago</CardDescription>
-                </CardHeader>
-                <CardContent className="pb-2">
-                  <div className="flex justify-between items-center">
-                    <div className="flex items-center">
-                      <div className="h-10 w-10 rounded-full bg-miamour-blush mr-3 flex items-center justify-center">
-                        <User className="h-5 w-5 text-miamour-burgundy" />
-                      </div>
-                      <div>
-                        <p className="text-sm truncate w-36">That sounds wonderful! I'd...</p>
-                      </div>
-                    </div>
-                    <Button size="sm" variant="ghost" className="text-miamour-burgundy">
-                      <MessageSquare className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader className="pb-2">
-                  <div className="flex justify-between">
-                    <CardTitle>Michael R.</CardTitle>
-                  </div>
-                  <CardDescription>Last message: Yesterday</CardDescription>
-                </CardHeader>
-                <CardContent className="pb-2">
-                  <div className="flex justify-between items-center">
-                    <div className="flex items-center">
-                      <div className="h-10 w-10 rounded-full bg-miamour-blush mr-3 flex items-center justify-center">
-                        <User className="h-5 w-5 text-miamour-burgundy" />
-                      </div>
-                      <div>
-                        <p className="text-sm truncate w-36">Looking forward to our coffee...</p>
-                      </div>
-                    </div>
-                    <Button size="sm" variant="ghost" className="text-miamour-burgundy">
-                      <MessageSquare className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
+            <Card>
+              <CardContent className="py-12 text-center">
+                <MessageSquare className="h-12 w-12 text-miamour-blush mx-auto mb-4" />
+                <h3 className="text-xl font-serif font-medium text-miamour-burgundy mb-2">No Active Connections</h3>
+                <p className="text-miamour-charcoal mb-6 max-w-md mx-auto">
+                  When you connect with someone, they'll appear here. Start by finding matches!
+                </p>
+                <Button 
+                  className="bg-miamour-burgundy text-white"
+                  onClick={() => navigate("/personalized-matchmaking")}
+                >
+                  Explore Matchmaking Services
+                </Button>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </div>

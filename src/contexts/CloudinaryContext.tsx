@@ -1,94 +1,74 @@
 
-import React, { createContext, useContext, ReactNode } from 'react';
-
-// Cloudinary configuration
-const CLOUDINARY_CONFIG = {
-  cloudName: 'djvhlf3pe',
-  apiKey: '529719449861544',
-  apiSecret: 'hlWARZIrmr2a62PhHOR9L1nQNOY',
-  uploadPreset: 'miamour-uploads'
-};
+import React, { createContext, useContext, useState } from "react";
+import { useToast } from "@/components/ui/use-toast";
 
 interface CloudinaryContextType {
-  uploadImage: (file: File) => Promise<string>;
-  uploadVideo: (file: File) => Promise<string>;
-  cloudName: string;
-  apiKey: string;
+  uploadImage: (file: File) => Promise<string | null>;
+  isUploading: boolean;
 }
 
 const CloudinaryContext = createContext<CloudinaryContextType | undefined>(undefined);
 
-export const CloudinaryProvider = ({ children }: { children: ReactNode }) => {
-  const uploadImage = async (file: File): Promise<string> => {
+export function useCloudinary() {
+  const context = useContext(CloudinaryContext);
+  if (context === undefined) {
+    throw new Error("useCloudinary must be used within a CloudinaryProvider");
+  }
+  return context;
+}
+
+interface CloudinaryProviderProps {
+  children: React.ReactNode;
+}
+
+const CloudinaryProvider: React.FC<CloudinaryProviderProps> = ({ children }) => {
+  const [isUploading, setIsUploading] = useState(false);
+  const { toast } = useToast();
+  
+  // Cloudinary upload preset should be set to 'unsigned' for client-side uploads
+  const cloudName = "djvhlf3pe";
+  
+  const uploadImage = async (file: File): Promise<string | null> => {
+    if (!file) return null;
+    
+    setIsUploading(true);
+    
+    // Create form data
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "miamour_uploads");
+    formData.append("api_key", "529719449861544");
+    
     try {
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('upload_preset', CLOUDINARY_CONFIG.uploadPreset);
-      formData.append('cloud_name', CLOUDINARY_CONFIG.cloudName);
-      
-      const response = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CONFIG.cloudName}/image/upload`, {
-        method: 'POST',
+      const response = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
+        method: "POST",
         body: formData,
       });
       
-      const data = await response.json();
-      
-      if (data.secure_url) {
-        return data.secure_url;
-      } else {
-        throw new Error('Upload failed');
+      if (!response.ok) {
+        throw new Error("Upload failed");
       }
-    } catch (error) {
-      console.error('Error uploading image:', error);
-      throw error;
-    }
-  };
-  
-  const uploadVideo = async (file: File): Promise<string> => {
-    try {
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('upload_preset', CLOUDINARY_CONFIG.uploadPreset);
-      formData.append('cloud_name', CLOUDINARY_CONFIG.cloudName);
       
-      const response = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CONFIG.cloudName}/video/upload`, {
-        method: 'POST',
-        body: formData,
+      const data = await response.json();
+      return data.secure_url;
+    } catch (error) {
+      console.error("Error uploading to Cloudinary:", error);
+      toast({
+        title: "Upload failed",
+        description: "There was a problem uploading your image. Please try again.",
+        variant: "destructive",
       });
-      
-      const data = await response.json();
-      
-      if (data.secure_url) {
-        return data.secure_url;
-      } else {
-        throw new Error('Upload failed');
-      }
-    } catch (error) {
-      console.error('Error uploading video:', error);
-      throw error;
+      return null;
+    } finally {
+      setIsUploading(false);
     }
-  };
-  
-  const value = {
-    uploadImage,
-    uploadVideo,
-    cloudName: CLOUDINARY_CONFIG.cloudName,
-    apiKey: CLOUDINARY_CONFIG.apiKey,
   };
   
   return (
-    <CloudinaryContext.Provider value={value}>
+    <CloudinaryContext.Provider value={{ uploadImage, isUploading }}>
       {children}
     </CloudinaryContext.Provider>
   );
-};
-
-export const useCloudinary = () => {
-  const context = useContext(CloudinaryContext);
-  if (context === undefined) {
-    throw new Error('useCloudinary must be used within a CloudinaryProvider');
-  }
-  return context;
 };
 
 export default CloudinaryProvider;
