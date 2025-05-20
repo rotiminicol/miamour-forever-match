@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -6,11 +7,13 @@ import { Label } from "@/components/ui/label";
 import { Heart, Apple, Facebook } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -56,6 +59,81 @@ const Login = () => {
       });
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback`
+        }
+      });
+
+      if (error) {
+        toast({
+          title: "Authentication failed",
+          description: error.message,
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Authentication error",
+        description: "An unexpected error occurred. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleFacebookSignIn = async () => {
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'facebook',
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback`
+        }
+      });
+
+      if (error) {
+        toast({
+          title: "Authentication failed",
+          description: error.message,
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Authentication error",
+        description: "An unexpected error occurred. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleAppleSignIn = async () => {
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'apple',
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback`
+        }
+      });
+
+      if (error) {
+        toast({
+          title: "Authentication failed",
+          description: error.message,
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Authentication error",
+        description: "An unexpected error occurred. Please try again.",
+        variant: "destructive",
+      });
     }
   };
 
@@ -126,6 +204,22 @@ const Login = () => {
               />
             </div>
 
+            <div className="flex items-start">
+              <div className="flex items-center h-5 mt-1">
+                <Checkbox 
+                  id="remember" 
+                  checked={rememberMe}
+                  onCheckedChange={(checked) => setRememberMe(checked as boolean)}
+                  className="data-[state=checked]:bg-miamour-burgundy data-[state=checked]:border-miamour-burgundy"
+                />
+              </div>
+              <div className="ml-3 text-sm">
+                <Label htmlFor="remember" className="text-miamour-charcoal cursor-pointer">
+                  Remember me
+                </Label>
+              </div>
+            </div>
+
             <Button
               type="submit"
               className="w-full bg-miamour-burgundy text-white hover:bg-miamour-burgundy/90"
@@ -146,19 +240,36 @@ const Login = () => {
             </div>
 
             <div className="grid grid-cols-3 gap-4">
-              <Button variant="outline" className="border-miamour-blush">
-                {/* Replace with a generic icon or SVG for Google */}
+              <Button 
+                variant="outline" 
+                className="border-miamour-blush"
+                onClick={handleGoogleSignIn}
+                type="button"
+              >
+                {/* Google icon SVG */}
                 <svg className="h-4 w-4" viewBox="0 0 24 24">
                   <g>
-                    <circle cx="12" cy="12" r="10" fill="#EA4335" />
-                    <text x="12" y="16" textAnchor="middle" fontSize="10" fill="#fff" fontFamily="Arial">G</text>
+                    <path fill="#EA4335" d="M21.805 10.023h-9.765v3.977h5.617c-.242 1.242-1.484 3.648-5.617 3.648-3.375 0-6.125-2.789-6.125-6.148s2.75-6.148 6.125-6.148c1.922 0 3.211.82 3.953 1.523l2.703-2.633c-1.711-1.57-3.922-2.531-6.656-2.531-5.523 0-10 4.477-10 10s4.477 10 10 10c5.75 0 9.563-4.031 9.563-9.719 0-.656-.07-1.148-.156-1.648z"/>
+                    <path fill="#34A853" d="M3.545 7.545l3.273 2.402c.891-1.742 2.578-2.945 4.687-2.945 1.109 0 2.125.383 2.922 1.016l2.703-2.633c-1.711-1.57-3.922-2.531-6.656-2.531-3.984 0-7.344 2.617-8.672 6.148z"/>
+                    <path fill="#FBBC05" d="M12 22c2.672 0 4.922-.883 6.563-2.398l-3.047-2.5c-.844.57-1.922.914-3.516.914-2.789 0-5.148-1.883-5.992-4.414l-3.273 2.531c1.617 3.367 5.125 5.867 9.265 5.867z"/>
+                    <path fill="#4285F4" d="M21.805 10.023h-9.765v3.977h5.617c-.242 1.242-1.484 3.648-5.617 3.648-3.375 0-6.125-2.789-6.125-6.148s2.75-6.148 6.125-6.148c1.922 0 3.211.82 3.953 1.523l2.703-2.633c-1.711-1.57-3.922-2.531-6.656-2.531-5.523 0-10 4.477-10 10s4.477 10 10 10c5.75 0 9.563-4.031 9.563-9.719 0-.656-.07-1.148-.156-1.648z"/>
                   </g>
                 </svg>
               </Button>
-              <Button variant="outline" className="border-miamour-blush">
+              <Button 
+                variant="outline" 
+                className="border-miamour-blush"
+                onClick={handleFacebookSignIn}
+                type="button"
+              >
                 <Facebook className="h-4 w-4 text-blue-600" />
               </Button>
-              <Button variant="outline" className="border-miamour-blush">
+              <Button 
+                variant="outline" 
+                className="border-miamour-blush"
+                onClick={handleAppleSignIn}
+                type="button"
+              >
                 <Apple className="h-4 w-4 text-gray-800" />
               </Button>
             </div>

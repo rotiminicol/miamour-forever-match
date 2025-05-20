@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -6,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Heart, Apple, Facebook } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const Register = () => {
   const [firstName, setFirstName] = useState("");
@@ -13,6 +15,7 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -30,6 +33,16 @@ const Register = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+
+    if (!acceptedTerms) {
+      toast({
+        title: "Terms and Conditions",
+        description: "You must accept the terms and privacy policy to continue",
+        variant: "destructive",
+      });
+      setIsLoading(false);
+      return;
+    }
 
     if (password.length < 8) {
       toast({
@@ -74,6 +87,81 @@ const Register = () => {
       });
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleGoogleSignUp = async () => {
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback`
+        }
+      });
+
+      if (error) {
+        toast({
+          title: "Authentication failed",
+          description: error.message,
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Authentication error",
+        description: "An unexpected error occurred. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleFacebookSignUp = async () => {
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'facebook',
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback`
+        }
+      });
+
+      if (error) {
+        toast({
+          title: "Authentication failed",
+          description: error.message,
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Authentication error",
+        description: "An unexpected error occurred. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleAppleSignUp = async () => {
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'apple',
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback`
+        }
+      });
+
+      if (error) {
+        toast({
+          title: "Authentication failed",
+          description: error.message,
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Authentication error",
+        description: "An unexpected error occurred. Please try again.",
+        variant: "destructive",
+      });
     }
   };
 
@@ -167,6 +255,29 @@ const Register = () => {
               </p>
             </div>
 
+            <div className="flex items-start">
+              <div className="flex items-center h-5 mt-1">
+                <Checkbox 
+                  id="terms" 
+                  checked={acceptedTerms}
+                  onCheckedChange={(checked) => setAcceptedTerms(checked as boolean)}
+                  className="data-[state=checked]:bg-miamour-burgundy data-[state=checked]:border-miamour-burgundy"
+                />
+              </div>
+              <div className="ml-3 text-sm">
+                <Label htmlFor="terms" className="text-miamour-charcoal cursor-pointer">
+                  I agree to the{" "}
+                  <Link to="/terms" className="text-miamour-burgundy hover:text-miamour-burgundy/80">
+                    Terms of Service
+                  </Link>{" "}
+                  and{" "}
+                  <Link to="/privacy" className="text-miamour-burgundy hover:text-miamour-burgundy/80">
+                    Privacy Policy
+                  </Link>
+                </Label>
+              </div>
+            </div>
+
             <Button
               type="submit"
               className="w-full bg-miamour-burgundy text-white hover:bg-miamour-burgundy/90"
@@ -187,7 +298,12 @@ const Register = () => {
             </div>
 
             <div className="grid grid-cols-3 gap-4">
-              <Button variant="outline" className="border-miamour-blush">
+              <Button 
+                variant="outline" 
+                className="border-miamour-blush"
+                onClick={handleGoogleSignUp}
+                type="button"
+              >
                 {/* Google icon SVG */}
                 <svg className="h-4 w-4" viewBox="0 0 24 24">
                   <g>
@@ -198,10 +314,20 @@ const Register = () => {
                   </g>
                 </svg>
               </Button>
-              <Button variant="outline" className="border-miamour-blush">
+              <Button 
+                variant="outline" 
+                className="border-miamour-blush"
+                onClick={handleFacebookSignUp}
+                type="button"
+              >
                 <Facebook className="h-4 w-4 text-blue-600" />
               </Button>
-              <Button variant="outline" className="border-miamour-blush">
+              <Button 
+                variant="outline" 
+                className="border-miamour-blush"
+                onClick={handleAppleSignUp}
+                type="button"
+              >
                 <Apple className="h-4 w-4 text-gray-800" />
               </Button>
             </div>

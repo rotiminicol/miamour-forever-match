@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
@@ -19,6 +19,9 @@ import CouplesTherapy from "./pages/CouplesTherapy";
 import Pricing from "./pages/Pricing";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
+import AuthCallback from "./pages/AuthCallback";
 import Dashboard from "./pages/Dashboard";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import NotFound from "./pages/NotFound";
@@ -28,14 +31,28 @@ import Notifications from "./pages/Notifications";
 import { useAuth } from "./contexts/AuthContext";
 import ModernSidebar from "./components/ModernSidebar";
 import NotificationsProvider from "./contexts/NotificationsContext";
+import CloudinaryProvider from "./contexts/CloudinaryContext";
+import CookieConsent from "./components/CookieConsent";
+import Loader from "./components/Loader";
+import { useState, useEffect } from "react";
 
 // Create a layout component to conditionally render the footer and navbar based on auth state
 const AppLayout = () => {
   const location = useLocation();
   const { user } = useAuth();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate page loading
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+    
+    return () => clearTimeout(timer);
+  }, []);
 
   // Pages where we only show the component content (no navbar, sidebar, or footer)
-  const fullScreenPages = ['/login', '/register'];
+  const fullScreenPages = ['/login', '/register', '/forgot-password', '/reset-password', '/auth/callback'];
   
   // Landing pages - show normal navbar and footer
   const landingPages = ['/', '/wedding-matching', '/couples-therapy', '/pricing'];
@@ -49,46 +66,64 @@ const AppLayout = () => {
   // Show sidebar when user is logged in and not on landing pages
   const showSidebar = user && !landingPages.includes(location.pathname) && !fullScreenPages.includes(location.pathname);
 
-  if (fullScreenPages.includes(location.pathname)) {
+  // Handle start journey redirect
+  const handleStartJourney = () => {
+    return user ? <Navigate to="/dashboard" /> : <MatchStartPage />;
+  };
+
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  if (fullScreenPages.includes(location.pathname) || location.pathname.startsWith('/auth/')) {
     return (
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-      </Routes>
+      <>
+        <CookieConsent />
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/auth/callback" element={<AuthCallback />} />
+        </Routes>
+      </>
     );
   }
 
   return (
-    <div className="flex flex-col min-h-screen">
-      {showNavbar && <Navbar />}
-      
-      <div className="flex flex-grow w-full">
-        {showSidebar && <ModernSidebar />}
+    <>
+      <CookieConsent />
+      <div className="flex flex-col min-h-screen">
+        {showNavbar && <Navbar />}
         
-        <main className={`flex-grow w-full ${showSidebar ? 'md:ml-0' : ''} smooth-scroll`}>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/wedding-matching" element={<WeddingMatching />} />
-            <Route path="/start-matching" element={<MatchStartPage />} />
-            <Route path="/profile-setup" element={<ProfileSetup />} />
-            <Route path="/match-preferences" element={<MatchPreferences />} />
-            <Route path="/payment" element={<Payment />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/matches" element={<MatchingDashboard />} />
-            <Route path="/couples-therapy" element={<CouplesTherapy />} />
-            <Route path="/pricing" element={<Pricing />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/payment-success" element={<PaymentSuccess />} />
-            <Route path="/messages" element={<Messages />} />
-            <Route path="/appointments" element={<Appointments />} />
-            <Route path="/notifications" element={<Notifications />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </main>
+        <div className="flex flex-grow w-full">
+          {showSidebar && <ModernSidebar />}
+          
+          <main className={`flex-grow w-full ${showSidebar ? 'md:ml-0' : ''} smooth-scroll`}>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/wedding-matching" element={<WeddingMatching />} />
+              <Route path="/start-matching" element={handleStartJourney()} />
+              <Route path="/profile-setup" element={<ProfileSetup />} />
+              <Route path="/match-preferences" element={<MatchPreferences />} />
+              <Route path="/payment" element={<Payment />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/matches" element={<MatchingDashboard />} />
+              <Route path="/couples-therapy" element={<CouplesTherapy />} />
+              <Route path="/pricing" element={<Pricing />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/payment-success" element={<PaymentSuccess />} />
+              <Route path="/messages" element={<Messages />} />
+              <Route path="/appointments" element={<Appointments />} />
+              <Route path="/notifications" element={<Notifications />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </main>
+        </div>
+        
+        {showFooter && <Footer />}
       </div>
-      
-      {showFooter && <Footer />}
-    </div>
+    </>
   );
 };
 
@@ -108,13 +143,15 @@ const App = () => {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <AuthProvider>
-          <NotificationsProvider>
-            <Toaster />
-            <Sonner />
-            <BrowserRouter>
-              <AppLayout />
-            </BrowserRouter>
-          </NotificationsProvider>
+          <CloudinaryProvider>
+            <NotificationsProvider>
+              <Toaster />
+              <Sonner />
+              <BrowserRouter>
+                <AppLayout />
+              </BrowserRouter>
+            </NotificationsProvider>
+          </CloudinaryProvider>
         </AuthProvider>
       </TooltipProvider>
     </QueryClientProvider>
