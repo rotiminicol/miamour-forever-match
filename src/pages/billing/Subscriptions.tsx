@@ -1,14 +1,192 @@
 
+
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Check, CreditCard, Calendar, AlertCircle } from "lucide-react";
+import { Check, CreditCard, Calendar, AlertCircle, Star, Heart } from "lucide-react";
+
+const matchmakingPlans = [
+  {
+    id: 'blossom',
+    name: 'Blossom Package',
+    price: '₦75,000',
+    priceUSD: '$20',
+    priceEUR: '€18',
+    period: '1 month',
+    features: [
+      'Exclusive matchmaking within your country',
+      'Access to live sessions',
+      'Basic profile verification',
+      'Standard customer support'
+    ],
+    icon: <Star className="w-6 h-6 text-pink-600" />,
+    color: 'from-pink-500 to-rose-500'
+  },
+  {
+    id: 'harmony',
+    name: 'Harmony Package',
+    price: '₦125,000',
+    priceUSD: '$33',
+    priceEUR: '€30',
+    period: '3 months',
+    features: [
+      'Exclusive matchmaking within and outside your country',
+      'Access to live sessions',
+      'Priority profile verification',
+      'Premium customer support',
+      'Advanced matching algorithms'
+    ],
+    icon: <Star className="w-6 h-6 text-purple-600" />,
+    color: 'from-purple-500 to-indigo-500'
+  },
+  {
+    id: 'forever',
+    name: 'My Forever Package',
+    price: '₦225,000',
+    priceUSD: '$66',
+    priceEUR: '€60',
+    period: '6 months',
+    features: [
+      'Personal matches',
+      'Private sessions',
+      'Access to high-profile members',
+      'Matches within and outside Nigeria',
+      'VIP customer support',
+      'Exclusive events access'
+    ],
+    icon: <Star className="w-6 h-6 text-amber-500" />,
+    color: 'from-amber-500 to-orange-500'
+  },
+  {
+    id: 'personalized',
+    name: 'Personalized Matching',
+    price: '₦475,000',
+    priceUSD: '$125',
+    priceEUR: '€115',
+    period: '1 year',
+    features: [
+      'Dedicated matchmaker',
+      'Customized matching strategy',
+      'Unlimited private sessions',
+      'Global elite network access',
+      '24/7 VIP support',
+      'Premium event invitations'
+    ],
+    icon: <Heart className="w-6 h-6 text-red-500" />,
+    color: 'from-red-500 to-pink-500'
+  }
+];
+
+const therapyPlans = [
+  {
+    id: 1,
+    name: "Reset Package",
+    description: "For those needing a fresh start",
+    sessions: 5,
+    priceNGN: 250000,
+    priceUSD: 156.25,
+    save: "15%",
+    features: [
+      "Comprehensive assessment",
+      "New perspective techniques",
+      "Goal setting",
+      "Action plan development"
+    ]
+  },
+  {
+    id: 2,
+    name: "Healing Plan",
+    description: "Deep emotional work and recovery",
+    sessions: 5,
+    priceNGN: 350000,
+    priceUSD: 218.75,
+    save: "25%",
+    popular: true,
+    features: [
+      "Emotional healing",
+      "Trauma recovery",
+      "Mind-body connection",
+      "Resilience building"
+    ]
+  },
+  {
+    id: 3,
+    name: "Mindful Living",
+    description: "Focus on stress and anxiety reduction",
+    sessions: 5,
+    priceNGN: 300000,
+    priceUSD: 156.25,
+    save: "15%",
+    features: [
+      "Mindfulness practices",
+      "Stress management",
+      "Relaxation techniques",
+      "Coping strategies"
+    ]
+  },
+  {
+    id: 4,
+    name: "Inner Peace",
+    description: "Managing depression and finding balance",
+    sessions: 5,
+    priceNGN: 400000,
+    priceUSD: 250.00,
+    save: "35%",
+    features: [
+      "Depression management",
+      "Mood regulation",
+      "Mindfulness training",
+      "Life balance"
+    ]
+  },
+  {
+    id: 5,
+    name: "Confidence Package",
+    description: "Self-esteem and personal growth",
+    sessions: 5,
+    priceNGN: 450000,
+    priceUSD: 187.50,
+    save: "20%",
+    features: [
+      "Self-esteem building",
+      "Personal growth",
+      "Boundary setting",
+      "Empowerment techniques"
+    ]
+  }
+];
 
 const Subscriptions = () => {
-  const [currentPlan, setCurrentPlan] = useState("basic");
-  
+  // Track selected plan type and id
+  const [selectedPlanType, setSelectedPlanType] = useState<"matchmaking" | "therapy">("matchmaking");
+  const [currentPlanId, setCurrentPlanId] = useState<string | number>("blossom");
+
+  // Helper for current plan display
+  const getCurrentPlan = () => {
+    if (selectedPlanType === "matchmaking") {
+      return matchmakingPlans.find((p) => p.id === currentPlanId);
+    }
+    return therapyPlans.find((p) => p.id === currentPlanId);
+  };
+
+  // Helper for price display
+  const getCurrentPlanPrice = () => {
+    const plan = getCurrentPlan();
+    if (!plan) return "";
+    if (selectedPlanType === "matchmaking") {
+      // Type guard: plan is a matchmaking plan
+      if ("price" in plan) {
+        return plan.price;
+      }
+      return "";
+    } else {
+      // plan is a therapy plan
+      return `₦${plan.priceNGN?.toLocaleString()}`;
+    }
+  };
+
   return (
     <div className="container py-8 px-4 md:px-6">
       <div className="max-w-6xl mx-auto">
@@ -19,165 +197,128 @@ const Subscriptions = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-10">
-          <Card className={`border-2 ${currentPlan === "basic" ? "border-miamour-pink" : "border-gray-200"}`}>
-            <CardHeader>
-              <div className="flex justify-between items-center mb-2">
-                <CardTitle className="text-xl font-serif font-medium text-miamour-burgundy">Basic Plan</CardTitle>
-                {currentPlan === "basic" && (
-                  <Badge className="bg-miamour-pink text-white">Current Plan</Badge>
-                )}
-              </div>
-              <CardDescription>Essential matching services</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="mb-6">
-                <span className="text-3xl font-bold text-miamour-burgundy">$19.99</span>
-                <span className="text-gray-500"> / month</span>
-              </div>
-              <ul className="space-y-2">
-                <li className="flex items-start">
-                  <Check className="h-5 w-5 text-miamour-pink mr-2 flex-shrink-0 mt-0.5" />
-                  <span>Basic profile creation</span>
-                </li>
-                <li className="flex items-start">
-                  <Check className="h-5 w-5 text-miamour-pink mr-2 flex-shrink-0 mt-0.5" />
-                  <span>Up to 5 matches per month</span>
-                </li>
-                <li className="flex items-start">
-                  <Check className="h-5 w-5 text-miamour-pink mr-2 flex-shrink-0 mt-0.5" />
-                  <span>Message with matches</span>
-                </li>
-              </ul>
-            </CardContent>
-            <CardFooter>
-              {currentPlan === "basic" ? (
-                <Button variant="outline" className="w-full" disabled>
-                  Current Plan
-                </Button>
-              ) : (
-                <Button 
-                  className="w-full bg-miamour-burgundy text-white"
-                  onClick={() => setCurrentPlan("basic")}
-                >
-                  Switch Plan
-                </Button>
-              )}
-            </CardFooter>
-          </Card>
-
-          <Card className={`border-2 ${currentPlan === "premium" ? "border-miamour-pink" : "border-gray-200"}`}>
-            <CardHeader>
-              <div className="flex justify-between items-center mb-2">
-                <CardTitle className="text-xl font-serif font-medium text-miamour-burgundy">Premium Plan</CardTitle>
-                {currentPlan === "premium" && (
-                  <Badge className="bg-miamour-pink text-white">Current Plan</Badge>
-                )}
-              </div>
-              <CardDescription>Enhanced matching experience</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="mb-6">
-                <span className="text-3xl font-bold text-miamour-burgundy">$39.99</span>
-                <span className="text-gray-500"> / month</span>
-              </div>
-              <ul className="space-y-2">
-                <li className="flex items-start">
-                  <Check className="h-5 w-5 text-miamour-pink mr-2 flex-shrink-0 mt-0.5" />
-                  <span>Enhanced profile with more photos</span>
-                </li>
-                <li className="flex items-start">
-                  <Check className="h-5 w-5 text-miamour-pink mr-2 flex-shrink-0 mt-0.5" />
-                  <span>Unlimited matches</span>
-                </li>
-                <li className="flex items-start">
-                  <Check className="h-5 w-5 text-miamour-pink mr-2 flex-shrink-0 mt-0.5" />
-                  <span>Priority matching algorithm</span>
-                </li>
-                <li className="flex items-start">
-                  <Check className="h-5 w-5 text-miamour-pink mr-2 flex-shrink-0 mt-0.5" />
-                  <span>1 free therapy session per month</span>
-                </li>
-              </ul>
-            </CardContent>
-            <CardFooter>
-              {currentPlan === "premium" ? (
-                <Button variant="outline" className="w-full" disabled>
-                  Current Plan
-                </Button>
-              ) : (
-                <Button 
-                  className="w-full bg-miamour-burgundy text-white"
-                  onClick={() => setCurrentPlan("premium")}
-                >
-                  Upgrade Plan
-                </Button>
-              )}
-            </CardFooter>
-          </Card>
-
-          <Card className={`border-2 ${currentPlan === "vip" ? "border-miamour-pink" : "border-gray-200"}`}>
-            <CardHeader>
-              <div className="flex justify-between items-center mb-2">
-                <CardTitle className="text-xl font-serif font-medium text-miamour-burgundy">VIP Plan</CardTitle>
-                {currentPlan === "vip" && (
-                  <Badge className="bg-miamour-pink text-white">Current Plan</Badge>
-                )}
-              </div>
-              <CardDescription>Personalized matchmaking services</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="mb-6">
-                <span className="text-3xl font-bold text-miamour-burgundy">$99.99</span>
-                <span className="text-gray-500"> / month</span>
-              </div>
-              <ul className="space-y-2">
-                <li className="flex items-start">
-                  <Check className="h-5 w-5 text-miamour-pink mr-2 flex-shrink-0 mt-0.5" />
-                  <span>All Premium Plan features</span>
-                </li>
-                <li className="flex items-start">
-                  <Check className="h-5 w-5 text-miamour-pink mr-2 flex-shrink-0 mt-0.5" />
-                  <span>Dedicated matchmaking specialist</span>
-                </li>
-                <li className="flex items-start">
-                  <Check className="h-5 w-5 text-miamour-pink mr-2 flex-shrink-0 mt-0.5" />
-                  <span>Monthly relationship coaching</span>
-                </li>
-                <li className="flex items-start">
-                  <Check className="h-5 w-5 text-miamour-pink mr-2 flex-shrink-0 mt-0.5" />
-                  <span>Date planning assistance</span>
-                </li>
-                <li className="flex items-start">
-                  <Check className="h-5 w-5 text-miamour-pink mr-2 flex-shrink-0 mt-0.5" />
-                  <span>Exclusive events access</span>
-                </li>
-              </ul>
-            </CardContent>
-            <CardFooter>
-              {currentPlan === "vip" ? (
-                <Button variant="outline" className="w-full" disabled>
-                  Current Plan
-                </Button>
-              ) : (
-                <Button 
-                  className="w-full bg-miamour-burgundy text-white"
-                  onClick={() => setCurrentPlan("vip")}
-                >
-                  Upgrade Plan
-                </Button>
-              )}
-            </CardFooter>
-          </Card>
+        {/* Plan Type Switcher */}
+        <div className="flex gap-4 mb-8">
+          <Button
+            variant={selectedPlanType === "matchmaking" ? "default" : "outline"}
+            className={selectedPlanType === "matchmaking" ? "bg-miamour-pink text-white" : ""}
+            onClick={() => setSelectedPlanType("matchmaking")}
+          >
+            Matchmaking Plans
+          </Button>
+          <Button
+            variant={selectedPlanType === "therapy" ? "default" : "outline"}
+            className={selectedPlanType === "therapy" ? "bg-miamour-pink text-white" : ""}
+            onClick={() => setSelectedPlanType("therapy")}
+          >
+            Therapy Plans
+          </Button>
         </div>
 
+        {/* Plans Section */}
+        {selectedPlanType === "matchmaking" ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+            {matchmakingPlans.map((plan) => (
+              <Card
+                key={plan.id}
+                className={`border-2 transition-all ${currentPlanId === plan.id ? "border-miamour-pink shadow-lg" : "border-gray-200"}`}
+              >
+                <CardHeader>
+                  <div className="flex items-center gap-2 mb-2">
+                    {plan.icon}
+                    <CardTitle className="text-lg font-serif font-medium text-miamour-burgundy">{plan.name}</CardTitle>
+                  </div>
+                  <CardDescription>{plan.period}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="mb-4">
+                    <span className="text-2xl font-bold text-miamour-burgundy">{plan.price}</span>
+                    <span className="ml-2 text-gray-500 text-sm">{plan.priceUSD} / {plan.period}</span>
+                  </div>
+                  <ul className="space-y-2">
+                    {plan.features.map((feature, idx) => (
+                      <li key={idx} className="flex items-start">
+                        <Check className="h-5 w-5 text-miamour-pink mr-2 flex-shrink-0 mt-0.5" />
+                        <span>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+                <CardFooter>
+                  {currentPlanId === plan.id ? (
+                    <Button variant="outline" className="w-full" disabled>
+                      Current Plan
+                    </Button>
+                  ) : (
+                    <Button
+                      className="w-full bg-miamour-burgundy text-white"
+                      onClick={() => setCurrentPlanId(plan.id)}
+                    >
+                      Choose Plan
+                    </Button>
+                  )}
+                </CardFooter>
+              </Card>
+            ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+            {therapyPlans.map((plan) => (
+              <Card
+                key={plan.id}
+                className={`border-2 transition-all ${currentPlanId === plan.id ? "border-miamour-pink shadow-lg" : "border-gray-200"}`}
+              >
+                <CardHeader>
+                  <div className="flex justify-between items-center mb-2">
+                    <CardTitle className="text-lg font-serif font-medium text-miamour-burgundy">{plan.name}</CardTitle>
+                    {plan.popular && (
+                      <Badge className="bg-miamour-pink text-white">Most Popular</Badge>
+                    )}
+                  </div>
+                  <CardDescription>{plan.description}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="mb-4 flex items-center gap-2">
+                    <span className="text-2xl font-bold text-miamour-burgundy">₦{plan.priceNGN.toLocaleString()}</span>
+                    <span className="text-gray-500 text-sm">/ {plan.sessions} sessions</span>
+                    <span className="ml-auto text-xs bg-green-100 text-green-700 px-2 py-1 rounded">{plan.save} off</span>
+                  </div>
+                  <ul className="space-y-2">
+                    {plan.features.map((feature, idx) => (
+                      <li key={idx} className="flex items-start">
+                        <Check className="h-5 w-5 text-miamour-pink mr-2 flex-shrink-0 mt-0.5" />
+                        <span>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+                <CardFooter>
+                  {currentPlanId === plan.id ? (
+                    <Button variant="outline" className="w-full" disabled>
+                      Current Plan
+                    </Button>
+                  ) : (
+                    <Button
+                      className="w-full bg-miamour-burgundy text-white"
+                      onClick={() => setCurrentPlanId(plan.id)}
+                    >
+                      Choose Plan
+                    </Button>
+                  )}
+                </CardFooter>
+              </Card>
+            ))}
+          </div>
+        )}
+
+        {/* Tabs Section */}
         <Tabs defaultValue="billing" className="mb-10">
           <TabsList className="grid grid-cols-3 w-full max-w-md mb-6">
             <TabsTrigger value="billing">Billing Info</TabsTrigger>
             <TabsTrigger value="history">Payment History</TabsTrigger>
             <TabsTrigger value="addons">Add-ons</TabsTrigger>
           </TabsList>
-          
+
           <TabsContent value="billing">
             <Card>
               <CardHeader>
@@ -200,7 +341,7 @@ const Subscriptions = () => {
                       <Badge>Default</Badge>
                     </div>
                   </div>
-                  
+
                   <div className="rounded-lg border p-4">
                     <div className="flex justify-between items-start">
                       <div>
@@ -209,13 +350,13 @@ const Subscriptions = () => {
                           <Calendar className="mr-2 h-4 w-4 text-gray-500" />
                           <span>June 15, 2025</span>
                         </div>
-                        <p className="text-sm text-gray-500 mt-1">Your {currentPlan} plan will automatically renew</p>
+                        <p className="text-sm text-gray-500 mt-1">
+                          Your {getCurrentPlan()?.name || "selected"} plan will automatically renew
+                        </p>
                       </div>
                       <div className="text-right">
                         <p className="font-medium">
-                          {currentPlan === "basic" && "$19.99"}
-                          {currentPlan === "premium" && "$39.99"}
-                          {currentPlan === "vip" && "$99.99"}
+                          {getCurrentPlanPrice()}
                         </p>
                       </div>
                     </div>
@@ -228,7 +369,7 @@ const Subscriptions = () => {
               </CardFooter>
             </Card>
           </TabsContent>
-          
+
           <TabsContent value="history">
             <Card>
               <CardHeader>
@@ -240,28 +381,18 @@ const Subscriptions = () => {
                   <div className="rounded-lg border p-4">
                     <div className="flex justify-between items-center">
                       <div>
-                        <p className="font-medium">Basic Plan Subscription</p>
+                        <p className="font-medium">{getCurrentPlan()?.name || "Plan"} Subscription</p>
                         <p className="text-sm text-gray-500">May 15, 2025</p>
                       </div>
                       <div className="text-right">
-                        <p className="font-medium">$19.99</p>
+                        <p className="font-medium">
+                          {getCurrentPlanPrice()}
+                        </p>
                         <Badge variant="outline" className="text-green-600">Paid</Badge>
                       </div>
                     </div>
                   </div>
-                  
-                  <div className="rounded-lg border p-4">
-                    <div className="flex justify-between items-center">
-                      <div>
-                        <p className="font-medium">Basic Plan Subscription</p>
-                        <p className="text-sm text-gray-500">Apr 15, 2025</p>
-                      </div>
-                      <div className="text-right">
-                        <p className="font-medium">$19.99</p>
-                        <Badge variant="outline" className="text-green-600">Paid</Badge>
-                      </div>
-                    </div>
-                  </div>
+                  {/* Add more payment history as needed */}
                 </div>
               </CardContent>
               <CardFooter>
@@ -269,7 +400,7 @@ const Subscriptions = () => {
               </CardFooter>
             </Card>
           </TabsContent>
-          
+
           <TabsContent value="addons">
             <Card>
               <CardHeader>
@@ -283,29 +414,27 @@ const Subscriptions = () => {
                       <div>
                         <h3 className="font-medium text-miamour-burgundy mb-1">Additional Therapy Sessions</h3>
                         <p className="text-sm text-gray-500 mb-2">Book extra therapy sessions beyond your plan allocation</p>
-                        <Badge variant="outline" className="text-miamour-burgundy">$49.99 per session</Badge>
+                        <Badge variant="outline" className="text-miamour-burgundy">₦50,000 per session</Badge>
                       </div>
                       <Button variant="outline">Add</Button>
                     </div>
                   </div>
-                  
                   <div className="rounded-lg border p-4">
                     <div className="flex justify-between items-start">
                       <div>
                         <h3 className="font-medium text-miamour-burgundy mb-1">Profile Boost</h3>
                         <p className="text-sm text-gray-500 mb-2">Get more visibility in the matching algorithm for 7 days</p>
-                        <Badge variant="outline" className="text-miamour-burgundy">$9.99</Badge>
+                        <Badge variant="outline" className="text-miamour-burgundy">₦10,000</Badge>
                       </div>
                       <Button variant="outline">Add</Button>
                     </div>
                   </div>
-                  
                   <div className="rounded-lg border p-4">
                     <div className="flex justify-between items-start">
                       <div>
                         <h3 className="font-medium text-miamour-burgundy mb-1">Date Planning Service</h3>
                         <p className="text-sm text-gray-500 mb-2">Let our experts plan a perfect date for you and your match</p>
-                        <Badge variant="outline" className="text-miamour-burgundy">$29.99 per date</Badge>
+                        <Badge variant="outline" className="text-miamour-burgundy">₦25,000 per date</Badge>
                       </div>
                       <Button variant="outline">Add</Button>
                     </div>
